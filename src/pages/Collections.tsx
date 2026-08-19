@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { SelvedgeRule } from '../components/SelvedgeRule'
+import BlurText from '../components/bits/BlurText'
+import FadeContent from '../components/bits/FadeContent'
+import Magnet from '../components/bits/Magnet'
 import { useBasket } from '../context/BasketContext'
 import { BRANDS, FIRM_LABELS } from '../data/brands'
 import { PIECES } from '../data/pieces'
@@ -145,9 +148,11 @@ export default function Collections({ firmPreset }: { firmPreset?: 'jdt' | 'jdw'
       <section className="bg-paper">
         <div className="container-site py-12 lg:py-16">
           <p className="eyebrow">The catalogue</p>
-          <h1 className="mt-5 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
-            Forty pieces, two firms. Filter and send.
-          </h1>
+          <BlurText
+            text="Forty pieces, two firms. Filter and send."
+            className="mt-5 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl"
+            delay={50}
+          />
           <p className="mt-4 font-utility text-sm text-ink-soft tabular-nums">
             {filtered.length} pieces match.
           </p>
@@ -191,30 +196,36 @@ export default function Collections({ firmPreset }: { firmPreset?: 'jdt' | 'jdw'
             {visible.length === 0 ? (
               <div className="py-20 text-center">
                 <p className="font-display text-2xl">No pieces match these filters.</p>
-                <button
-                  type="button"
-                  onClick={clearAll}
-                  className="mt-6 border border-zari px-6 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
-                >
-                  Clear filters
-                </button>
+                <Magnet padding={30} magnetStrength={3}>
+                  <button
+                    type="button"
+                    onClick={clearAll}
+                    className="mt-6 border border-zari px-6 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
+                  >
+                    Clear filters
+                  </button>
+                </Magnet>
               </div>
             ) : (
               <>
                 <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-                  {visible.map(p => (
-                    <PieceCard key={p.code} piece={p} />
+                  {visible.map((p, idx) => (
+                    <FadeContent key={p.code} blur duration={600} delay={Math.min(idx * 0.05, 0.4)}>
+                      <PieceCard piece={p} />
+                    </FadeContent>
                   ))}
                 </div>
                 {hasMore && (
                   <div className="mt-12 flex justify-center">
-                    <button
-                      type="button"
-                      onClick={() => setShown(s => s + NEXT_SIZE)}
-                      className="border border-zari px-8 py-4 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
-                    >
-                      Load {Math.min(NEXT_SIZE, filtered.length - shown)} more
-                    </button>
+                    <Magnet padding={40} magnetStrength={3}>
+                      <button
+                        type="button"
+                        onClick={() => setShown(s => s + NEXT_SIZE)}
+                        className="border border-zari px-8 py-4 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
+                      >
+                        Load {Math.min(NEXT_SIZE, filtered.length - shown)} more
+                      </button>
+                    </Magnet>
                   </div>
                 )}
               </>

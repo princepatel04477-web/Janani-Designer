@@ -136,6 +136,15 @@
     max-width: 100%;
   }
 
+  @media (pointer: fine) {
+    html.has-custom-cursor,
+    html.has-custom-cursor *,
+    html.has-custom-cursor *::before,
+    html.has-custom-cursor *::after {
+      cursor: none !important;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

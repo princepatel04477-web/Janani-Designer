@@ -3,9 +3,13 @@ import { motion, type Variants } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { usePageMeta } from '../lib/usePageMeta'
 import SplitText from '../components/bits/SplitText'
+import BlurText from '../components/bits/BlurText'
 import ShinyText from '../components/bits/ShinyText'
 import ScrollReveal from '../components/bits/ScrollReveal'
 import AnimatedContent from '../components/bits/AnimatedContent'
+import FadeContent from '../components/bits/FadeContent'
+import Magnet from '../components/bits/Magnet'
+import FlowingMenu from '../components/bits/FlowingMenu'
 import CircularGallery from '../components/bits/CircularGallery'
 import LogoLoop, { type LogoItem } from '../components/bits/LogoLoop'
 import { SelvedgeRule } from '../components/SelvedgeRule'
@@ -14,6 +18,29 @@ import { CAPABILITIES, LEGACY, PARTNERS, PIECES } from '../data/pieces'
 import { cn } from '../lib/cn'
 
 const GALLERY = PIECES.slice(0, 8).map(p => ({ image: p.image, text: p.code }))
+
+const DEPARTMENTS = [
+  {
+    link: '/sarees',
+    text: 'Janani Dreams TexFab',
+    image: '/hero-sarees.webp'
+  },
+  {
+    link: '/lehengas',
+    text: 'Janani Designer World',
+    image: '/hero-lehengas.webp'
+  },
+  {
+    link: '/craft',
+    text: 'Karigars & Looms',
+    image: '/placeholders/fabric-3.webp'
+  },
+  {
+    link: '/partner',
+    text: 'Commercial & Export Terms',
+    image: '/placeholders/fabric-4.webp'
+  }
+]
 
 const PARTNER_LOGOS: LogoItem[] = PARTNERS.map(p => ({
   node: <span className="font-utility text-sm">{p.name} · {p.city}</span>
@@ -141,14 +168,18 @@ function HeroPanel({
             delay={0.18}
           />
           <p className="mt-5 max-w-md text-lg text-paper/90">{copy}</p>
-          <span
-            className="mt-8 inline-flex items-center border border-paper px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] text-paper transition-colors duration-base ease-signature"
-            style={{ ['--accent' as string]: accent }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = accent }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = '' }}
-          >
-            See the catalogue →
-          </span>
+          <div className="mt-8 inline-block">
+            <Magnet padding={40} magnetStrength={3}>
+              <span
+                className="inline-flex items-center border border-paper px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] text-paper transition-colors duration-base ease-signature"
+                style={{ ['--accent' as string]: accent }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = accent }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = '' }}
+              >
+                See the catalogue →
+              </span>
+            </Magnet>
+          </div>
       </motion.div>
     </motion.div>
   )
@@ -205,22 +236,24 @@ function LegacyStrip() {
   return (
     <section aria-label="Legacy" className="bg-paper-deep">
       <div className="container-site py-24 lg:py-32">
-        <ul className="grid grid-cols-2 gap-y-12 lg:grid-cols-4">
-          {items.map((it, i) => (
-            <li
-              key={it.label}
-              className={cn(
-                'px-6 lg:px-10',
-                i > 0 && 'lg:border-l lg:border-zari/30'
-              )}
-            >
-              <p className="font-display text-5xl font-normal leading-none tracking-tight lg:text-6xl">
-                <CountUp to={it.value} suffix={it.suffix} />
-              </p>
-              <p className="mt-4 font-utility text-xs text-ink-soft">{it.label}</p>
-            </li>
-          ))}
-        </ul>
+        <FadeContent blur duration={800}>
+          <ul className="grid grid-cols-2 gap-y-12 lg:grid-cols-4">
+            {items.map((it, i) => (
+              <li
+                key={it.label}
+                className={cn(
+                  'px-6 lg:px-10',
+                  i > 0 && 'lg:border-l lg:border-zari/30'
+                )}
+              >
+                <p className="font-display text-5xl font-normal leading-none tracking-tight lg:text-6xl">
+                  <CountUp to={it.value} suffix={it.suffix} />
+                </p>
+                <p className="mt-4 font-utility text-xs text-ink-soft">{it.label}</p>
+              </li>
+            ))}
+          </ul>
+        </FadeContent>
       </div>
     </section>
   )
@@ -336,12 +369,14 @@ function SignatureCollections() {
         />
       </div>
       <div className="container-site pb-24 lg:pb-32">
-        <Link
-          to="/collections"
-          className="mt-10 inline-flex items-center border border-zari px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
-        >
-          Open the full catalogue
-        </Link>
+        <Magnet padding={40} magnetStrength={3}>
+          <Link
+            to="/collections"
+            className="mt-10 inline-flex items-center border border-zari px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
+          >
+            Open the full catalogue
+          </Link>
+        </Magnet>
       </div>
     </section>
   )
@@ -395,6 +430,34 @@ function CraftSection() {
 }
 
 /* --------------------------------------------------------------------------
+   House Directory (FlowingMenu)
+-------------------------------------------------------------------------- */
+
+function HouseDirectory() {
+  return (
+    <section aria-label="House departments" className="bg-ink text-paper">
+      <div className="container-site py-20 lg:py-24">
+        <p className="eyebrow text-paper/60">House directory</p>
+        <h2 className="mt-5 max-w-2xl font-display text-2xl font-normal leading-[1.1] tracking-tight text-paper lg:text-3xl">
+          Two firms, distinct crafts, unified under one ledger.
+        </h2>
+      </div>
+      <div className="h-[440px] w-full border-y border-zari/30">
+        <FlowingMenu
+          items={DEPARTMENTS}
+          speed={18}
+          textColor="var(--paper)"
+          bgColor="var(--ink)"
+          marqueeBgColor="var(--paper)"
+          marqueeTextColor="var(--ink)"
+          borderColor="rgba(168, 135, 75, 0.3)"
+        />
+      </div>
+    </section>
+  )
+}
+
+/* --------------------------------------------------------------------------
    Why partner with us (Prompt 5 §5)
 -------------------------------------------------------------------------- */
 
@@ -403,9 +466,11 @@ function WhyPartner() {
     <section aria-label="Why partner with us" className="bg-paper">
       <div className="container-site py-24 lg:py-40">
         <p className="eyebrow">Why partner with us</p>
-        <h2 className="mt-5 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
-          Five things a buyer evaluates, in order.
-        </h2>
+        <BlurText
+          text="Five things a buyer evaluates, in order."
+          className="mt-5 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl"
+          delay={50}
+        />
         <ul className="mt-16 grid grid-cols-1 lg:grid-cols-5">
           {CAPABILITIES.map((cap, i) => (
             <li
@@ -488,12 +553,14 @@ function CatalogueCTA() {
               className="w-full bg-transparent py-3 text-lg text-paper placeholder:text-paper/40 focus:outline-none"
             />
           </label>
-          <button
-            type="submit"
-            className="self-start border border-paper px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] text-paper hover:bg-paper hover:text-ink transition-colors duration-base ease-signature sm:self-end"
-          >
-            Send catalogue
-          </button>
+          <Magnet padding={40} magnetStrength={3}>
+            <button
+              type="submit"
+              className="border border-paper px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] text-paper hover:bg-paper hover:text-ink transition-colors duration-base ease-signature"
+            >
+              Send catalogue
+            </button>
+          </Magnet>
         </form>
       </div>
     </section>
@@ -522,6 +589,8 @@ export default function Home() {
       <SignatureCollections />
       <SelvedgeRule />
       <CraftSection />
+      <SelvedgeRule />
+      <HouseDirectory />
       <SelvedgeRule />
       <WhyPartner />
       <SelvedgeRule />

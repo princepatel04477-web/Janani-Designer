@@ -4,6 +4,7 @@ import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { FloatingWhatsApp } from './FloatingWhatsApp'
 import { BasketDrawer } from './BasketDrawer'
+import { CustomCursor } from '../CustomCursor'
 
 /**
  * Layout — the persistent shell around every page.
@@ -13,6 +14,7 @@ import { BasketDrawer } from './BasketDrawer'
 export function Layout({ children }: { children: ReactNode }) {
   return (
     <>
+      <CustomCursor />
       <UtilityStrip />
       <Navbar />
       <div className="pt-[100px]">{children}</div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useBasket } from '../../context/BasketContext'
+import Magnet from '../bits/Magnet'
 import { cn } from '../../lib/cn'
 
 const LEFT = [
@@ -111,19 +112,21 @@ export function Navbar() {
               </NavLink>
             ))}
 
-            <button
-              type="button"
-              onClick={toggle}
-              className={cn(
-                'flex h-7 min-w-7 items-center justify-center border px-2 font-utility text-xs tabular-nums transition-colors duration-base ease-signature',
-                transparent
-                  ? 'border-paper/60 text-paper hover:bg-paper hover:text-ink'
-                  : 'border-zari/60 text-ink hover:bg-zari hover:text-paper'
-              )}
-              aria-label={`Enquiry basket, ${count} pieces`}
-            >
-              {count}
-            </button>
+            <Magnet padding={40} magnetStrength={4}>
+              <button
+                type="button"
+                onClick={toggle}
+                className={cn(
+                  'flex h-7 min-w-7 items-center justify-center border px-2 font-utility text-xs tabular-nums transition-colors duration-base ease-signature',
+                  transparent
+                    ? 'border-paper/60 text-paper hover:bg-paper hover:text-ink'
+                    : 'border-zari/60 text-ink hover:bg-zari hover:text-paper'
+                )}
+                aria-label={`Enquiry basket, ${count} pieces`}
+              >
+                {count}
+              </button>
+            </Magnet>
           </nav>
 
           <button

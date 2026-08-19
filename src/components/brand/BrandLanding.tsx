@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom'
 import AnimatedContent from '../bits/AnimatedContent'
+import FadeContent from '../bits/FadeContent'
+import BlurText from '../bits/BlurText'
+import ShinyText from '../bits/ShinyText'
+import Magnet from '../bits/Magnet'
 import Masonry from '../bits/Masonry'
 import { SelvedgeRule } from '../SelvedgeRule'
 import { useBasket } from '../../context/BasketContext'
@@ -48,11 +52,13 @@ export function BrandLanding({ brand, pieces }: BrandLandingProps) {
         <div className="absolute inset-x-0 bottom-0 z-10 text-paper">
           <div className="container-site pb-20 lg:pb-24">
             <p className="font-utility text-xs uppercase tracking-[0.18em] text-paper/80">
-              {brand.legalName} · est. {brand.founded}
+              <ShinyText text={`${brand.legalName} · est. ${brand.founded}`} color="rgba(240, 238, 230, 0.85)" shineColor="var(--zari)" speed={6} />
             </p>
-            <h1 className="mt-5 font-display text-3xl font-normal leading-[1.05] tracking-tight sm:text-4xl lg:text-5xl">
-              {brand.name}
-            </h1>
+            <BlurText
+              text={brand.name}
+              className="mt-5 font-display text-3xl font-normal leading-[1.05] tracking-tight sm:text-4xl lg:text-5xl"
+              delay={50}
+            />
             <p className="mt-6 max-w-2xl text-lg text-paper/90">{brand.positioning}</p>
           </div>
         </div>
@@ -103,9 +109,9 @@ export function BrandLanding({ brand, pieces }: BrandLandingProps) {
           </h2>
         </div>
         <div className="container-site py-12 lg:py-16">
-          <div className="h-[640px]">
+          <FadeContent blur duration={800} className="h-[640px]">
             <Masonry items={categoryItems} hoverScale={0.98} />
-          </div>
+          </FadeContent>
         </div>
       </section>
 
@@ -121,18 +127,22 @@ export function BrandLanding({ brand, pieces }: BrandLandingProps) {
             Add pieces to the basket, or send the team a direct line.
           </h2>
           <div className="mt-10 flex flex-wrap gap-4">
-            <Link
-              to="/collections?firm=jdt"
-              className="border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
-            >
-              Open the catalogue
-            </Link>
-            <Link
-              to="/enquiry"
-              className="border border-zari px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
-            >
-              See the basket
-            </Link>
+            <Magnet padding={30} magnetStrength={3}>
+              <Link
+                to={`/collections?firm=${brand.id}`}
+                className="border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
+              >
+                Open the catalogue
+              </Link>
+            </Magnet>
+            <Magnet padding={30} magnetStrength={3}>
+              <Link
+                to="/enquiry"
+                className="border border-zari px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
+              >
+                See the basket
+              </Link>
+            </Magnet>
           </div>
         </div>
       </section>
