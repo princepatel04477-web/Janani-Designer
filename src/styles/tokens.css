@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   JANANI DESIGN TOKENS
+   The single source of truth for colour, type, layout and motion.
+   Everything else in the site reads from these variables.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* COLOUR */
+  --paper: #f0eee6; /* cool greige, page ground */
+  --paper-deep: #e4e1d6; /* section alternation */
+  --ink: #1a1a18; /* body text, near-black */
+  --ink-soft: #5c5a52; /* secondary text */
+  --zari: #a8874b; /* hairlines, rules, small accents ONLY — never fills */
+  --neel: #1f3a5f; /* Janani Dreams TexFab accent (indigo) */
+  --lac: #7a1f2b; /* Janani Designer World accent (deep lac red) */
+
+  /* TYPE */
+  --font-display: "Bodoni Moda", "Georgia", serif;
+  --font-body: "Karla", "Helvetica Neue", Arial, sans-serif;
+  --font-utility: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* LAYOUT */
+  --max-width: 1440px;
+  --gutter-desktop: 80px;
+  --gutter-mobile: 24px;
+  --section-y-desktop: 160px;
+  --section-y-mobile: 80px;
+
+  /* MOTION */
+  --ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 600ms;
+  --duration-slow: 800ms;
+}
+
+/* Tailwind v4 theme extension — maps the tokens to utilities
+   (bg-paper, text-ink, font-display, duration-slow, ease-signature …). */
+@theme {
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-zari: var(--zari);
+  --color-neel: var(--neel);
+  --color-lac: var(--lac);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-utility: var(--font-utility);
+
+  /* Type scale: 72 / 48 / 32 / 24 / 18 / 16 / 14 / 12 */
+  --text-xs: 12px;
+  --text-xs--line-height: 1.5;
+  --text-sm: 14px;
+  --text-sm--line-height: 1.5;
+  --text-base: 16px;
+  --text-base--line-height: 1.7;
+  --text-lg: 18px;
+  --text-lg--line-height: 1.6;
+  --text-xl: 24px;
+  --text-xl--line-height: 1.3;
+  --text-2xl: 32px;
+  --text-2xl--line-height: 1.2;
+  --text-3xl: 48px;
+  --text-3xl--line-height: 1.1;
+  --text-4xl: 72px;
+  --text-4xl--line-height: 1.05;
+
+  /* Motion */
+  --ease-signature: var(--ease-signature);
+  --duration-fast: var(--duration-fast);
+  --duration-slow: var(--duration-slow);
+
+  /* This house does not use rounded corners or drop shadows. */
+  --radius-*: initial;
+  --shadow-*: initial;
+}
+
+/* ---------------------------------------------------------------------------
+   BASE
+--------------------------------------------------------------------------- */
+
+@layer base {
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  ::selection {
+    background: var(--zari);
+    color: var(--paper);
+  }
+
+  /* Visible keyboard focus, always in zari */
+  :focus-visible {
+    outline: 1px solid var(--zari);
+    outline-offset: 3px;
+  }
+
+  /* No rounding anywhere, even on default form controls */
+  button,
+  input,
+  textarea,
+  select,
+  img,
+  a {
+    border-radius: 0;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   PRIMITIVES
+--------------------------------------------------------------------------- */
+
+/* Mono eyebrow — the only ALL CAPS allowed in the system (12px mono) */
+.eyebrow {
+  font-family: var(--font-utility);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* Site container: max 1440px, 24px gutter mobile / 80px desktop */
+.container-site {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--gutter-mobile);
+}
+
+@media (min-width: 1024px) {
+  .container-site {
+    padding-inline: var(--gutter-desktop);
+  }
+}
+
+/* Section vertical rhythm: 80px mobile / 160px desktop */
+.section-y {
+  padding-block: var(--section-y-mobile);
+}
+
+@media (min-width: 1024px) {
+  .section-y {
+    padding-block: var(--section-y-desktop);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   SELVEDGE RULE — the house's only divider.
+   A 2px band of repeating woven-pattern SVG in zari at 40% opacity.
+--------------------------------------------------------------------------- */
+
+.selvedge-rule {
+  height: 2px;
+  color: var(--zari);
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='2' viewBox='0 0 32 2'%3E%3Cg fill='currentColor'%3E%3Cpath d='M0 0h2v2H0z'/%3E%3Cpath d='M5 0h1v2H5z'/%3E%3Cpath d='M9 1h2v1H9z'/%3E%3Cpath d='M14 0h2v2H14z'/%3E%3Cpath d='M19 0h1v2H19z'/%3E%3Cpath d='M23 1h2v1H23z'/%3E%3Cpath d='M27 0h2v2H27z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 32px 2px;
+  background-repeat: repeat-x;
+}
