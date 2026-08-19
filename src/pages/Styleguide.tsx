@@ -80,24 +80,24 @@ const CATALOGUE = [
 ]
 
 const GALLERY_ITEMS = CATALOGUE.map((c, i) => ({
-  image: `/placeholders/fabric-${(i % 6) + 1}.jpg`,
+  image: `/placeholders/fabric-${(i % 6) + 1}.webp`,
   text: c.code
 }))
 
 const MASONRY_ITEMS = [
-  { id: 'f1', img: '/placeholders/fabric-1.jpg', url: '/sarees', height: 320 },
-  { id: 'f2', img: '/placeholders/fabric-2.jpg', url: '/lehengas', height: 420 },
-  { id: 'f3', img: '/placeholders/fabric-3.jpg', url: '/sarees', height: 360 },
-  { id: 'f4', img: '/placeholders/fabric-4.jpg', url: '/sarees', height: 280 },
-  { id: 'f5', img: '/placeholders/fabric-5.jpg', url: '/lehengas', height: 380 },
-  { id: 'f6', img: '/placeholders/fabric-6.jpg', url: '/sarees', height: 300 }
+  { id: 'f1', img: '/placeholders/fabric-1.webp', url: '/sarees', height: 320 },
+  { id: 'f2', img: '/placeholders/fabric-2.webp', url: '/lehengas', height: 420 },
+  { id: 'f3', img: '/placeholders/fabric-3.webp', url: '/sarees', height: 360 },
+  { id: 'f4', img: '/placeholders/fabric-4.webp', url: '/sarees', height: 280 },
+  { id: 'f5', img: '/placeholders/fabric-5.webp', url: '/lehengas', height: 380 },
+  { id: 'f6', img: '/placeholders/fabric-6.webp', url: '/sarees', height: 300 }
 ]
 
 const FLOWING_ITEMS = [
-  { link: '/sarees', text: 'Sarees', image: '/placeholders/fabric-1.jpg' },
-  { link: '/lehengas', text: 'Lehengas', image: '/placeholders/fabric-2.jpg' },
-  { link: '/collections', text: 'Collections', image: '/placeholders/fabric-3.jpg' },
-  { link: '/craft', text: 'Craft', image: '/placeholders/fabric-4.jpg' }
+  { link: '/sarees', text: 'Sarees', image: '/placeholders/fabric-1.webp' },
+  { link: '/lehengas', text: 'Lehengas', image: '/placeholders/fabric-2.webp' },
+  { link: '/collections', text: 'Collections', image: '/placeholders/fabric-3.webp' },
+  { link: '/craft', text: 'Craft', image: '/placeholders/fabric-4.webp' }
 ]
 
 const PARTNER_LOGOS: LogoItem[] = [

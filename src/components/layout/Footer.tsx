@@ -1,0 +1,91 @@
+import { Link } from 'react-router-dom'
+import { SelvedgeRule } from '../SelvedgeRule'
+
+export function Footer() {
+  return (
+    <footer className="bg-ink text-paper">
+      <div className="container-site">
+        <SelvedgeRule />
+        <div className="grid grid-cols-1 gap-12 py-20 lg:grid-cols-[1.2fr_1fr_1fr_1fr]">
+          <FirmColumn
+            name="Janani Dreams TexFab Pvt Ltd"
+            line="GST 24ABCDE1234F1Z5"
+            address={['Plot 17, GIDC Sachin', 'Surat 394230, Gujarat, India']}
+          />
+          <FirmColumn
+            name="Janani Designer World"
+            line="GST 08ABCDE5678G1Z9"
+            address={['B-22, Sitapura Industrial Area', 'Jaipur 302022, Rajasthan, India']}
+          />
+          <Column title="The house">
+            <FooterLink to="/">Home</FooterLink>
+            <FooterLink to="/sarees">Sarees</FooterLink>
+            <FooterLink to="/lehengas">Lehengas</FooterLink>
+            <FooterLink to="/collections">Collections</FooterLink>
+            <FooterLink to="/craft">Craft</FooterLink>
+            <FooterLink to="/partner">Partner with us</FooterLink>
+            <FooterLink to="/contact">Contact</FooterLink>
+            <FooterLink to="/enquiry">Enquiry basket</FooterLink>
+          </Column>
+          <Column title="Contact">
+            <li className="font-utility text-xs text-paper/70">Wholesale · +91 98765 43210</li>
+            <li className="font-utility text-xs text-paper/70">Sales · trade@janani.in</li>
+            <li className="font-utility text-xs text-paper/70">Showrooms · Surat · Jaipur</li>
+            <li className="mt-4 flex gap-4 font-utility text-xs">
+              <a href="#" className="hover:text-zari">Catalogue 2026 (PDF)</a>
+            </li>
+          </Column>
+        </div>
+      </div>
+      <div className="border-t border-paper/15">
+        <div className="container-site flex flex-col gap-2 py-6 font-utility text-xs text-paper/60 sm:flex-row sm:items-center sm:justify-between">
+          <span>Janani, established 1987. Two firms, one loom-room.</span>
+          <span>© {new Date().getFullYear()} Janani · All rights reserved</span>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+function Column({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <p className="eyebrow mb-5 text-paper/60">{title}</p>
+      <ul className="space-y-2 text-sm">{children}</ul>
+    </div>
+  )
+}
+
+function FirmColumn({
+  name,
+  line,
+  address
+}: {
+  name: string
+  line: string
+  address: string[]
+}) {
+  return (
+    <div>
+      <p className="font-display text-xl leading-tight">{name}</p>
+      <p className="mt-3 font-utility text-xs text-paper/60">{line}</p>
+      <p className="mt-4 text-sm leading-relaxed text-paper/80">
+        {address.map((line, i) => (
+          <span key={i} className="block">
+            {line}
+          </span>
+        ))}
+      </p>
+    </div>
+  )
+}
+
+function FooterLink({ to, children }: { to: string; children: React.ReactNode }) {
+  return (
+    <li>
+      <Link to={to} className="hover:text-zari focus-visible:text-zari">
+        {children}
+      </Link>
+    </li>
+  )
+}
