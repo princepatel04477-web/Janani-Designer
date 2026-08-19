@@ -58,8 +58,10 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          'fixed inset-x-0 top-8 z-40 transition-[background-color,border-color,box-shadow] duration-slow ease-signature',
-          transparent ? 'bg-transparent' : 'bg-paper border-b border-zari/30'
+          'fixed inset-x-0 top-8 z-40 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-slow ease-signature',
+          transparent
+            ? 'bg-ink/35 backdrop-blur-md supports-[backdrop-filter]:bg-ink/30'
+            : 'bg-paper border-b border-zari/30'
         )}
       >
         <div className="container-site flex h-[68px] items-center justify-between gap-6">
@@ -70,7 +72,7 @@ export function Navbar() {
                 to={item.to}
                 className={({ isActive }) =>
                   cn(
-                    'hover:opacity-70 focus-visible:opacity-70',
+                    'transition-opacity hover:opacity-70 focus-visible:opacity-70',
                     transparent ? 'text-paper' : 'text-ink',
                     isActive && 'underline decoration-zari decoration-1 underline-offset-[6px]'
                   )
@@ -99,7 +101,7 @@ export function Navbar() {
                 to={item.to}
                 className={({ isActive }) =>
                   cn(
-                    'hover:opacity-70 focus-visible:opacity-70',
+                    'transition-opacity hover:opacity-70 focus-visible:opacity-70',
                     transparent ? 'text-paper' : 'text-ink',
                     isActive && 'underline decoration-zari decoration-1 underline-offset-[6px]'
                   )
@@ -113,8 +115,10 @@ export function Navbar() {
               type="button"
               onClick={toggle}
               className={cn(
-                'flex h-7 w-7 items-center justify-center border border-zari/60 font-utility text-xs',
-                transparent ? 'text-paper' : 'text-ink'
+                'flex h-7 min-w-7 items-center justify-center border px-2 font-utility text-xs tabular-nums transition-colors duration-base ease-signature',
+                transparent
+                  ? 'border-paper/60 text-paper hover:bg-paper hover:text-ink'
+                  : 'border-zari/60 text-ink hover:bg-zari hover:text-paper'
               )}
               aria-label={`Enquiry basket, ${count} pieces`}
             >
@@ -128,7 +132,7 @@ export function Navbar() {
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen(v => !v)}
             className={cn(
-              'md:hidden font-utility text-xs uppercase tracking-[0.2em]',
+              'md:hidden font-utility text-xs uppercase tracking-[0.2em] transition-opacity hover:opacity-70',
               transparent ? 'text-paper' : 'text-ink'
             )}
           >
