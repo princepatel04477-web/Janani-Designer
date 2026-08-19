@@ -1,5 +1,16 @@
 import { SelvedgeRule } from '../components/SelvedgeRule'
 import { cn } from '../lib/cn'
+import SplitText from '../components/bits/SplitText'
+import BlurText from '../components/bits/BlurText'
+import ScrollReveal from '../components/bits/ScrollReveal'
+import AnimatedContent from '../components/bits/AnimatedContent'
+import FadeContent from '../components/bits/FadeContent'
+import ShinyText from '../components/bits/ShinyText'
+import Magnet from '../components/bits/Magnet'
+import CircularGallery from '../components/bits/CircularGallery'
+import Masonry from '../components/bits/Masonry'
+import FlowingMenu from '../components/bits/FlowingMenu'
+import LogoLoop, { type LogoItem } from '../components/bits/LogoLoop'
 
 /* ---------------------------------------------------------------------------
    Styleguide helpers
@@ -51,6 +62,78 @@ function SpecRow({ label, children }: { label: string; children: React.ReactNode
     <div className="grid grid-cols-1 gap-1 border-b border-zari/25 py-3 sm:grid-cols-[220px_1fr]">
       <span className="font-utility text-xs text-ink-soft">{label}</span>
       <div className="text-sm">{children}</div>
+    </div>
+  )
+}
+
+/* ---------------------------------------------------------------------------
+   React Bits fixtures
+--------------------------------------------------------------------------- */
+
+const CATALOGUE = [
+  { code: 'JDT-2401', firm: 'Dreams TexFab' },
+  { code: 'JDT-2412', firm: 'Dreams TexFab' },
+  { code: 'JDT-2418', firm: 'Dreams TexFab' },
+  { code: 'JDW-3104', firm: 'Designer World' },
+  { code: 'JDW-3116', firm: 'Designer World' },
+  { code: 'JDW-3122', firm: 'Designer World' },
+]
+
+const GALLERY_ITEMS = CATALOGUE.map((c, i) => ({
+  image: `/placeholders/fabric-${(i % 6) + 1}.jpg`,
+  text: c.code
+}))
+
+const MASONRY_ITEMS = [
+  { id: 'f1', img: '/placeholders/fabric-1.jpg', url: '/sarees', height: 320 },
+  { id: 'f2', img: '/placeholders/fabric-2.jpg', url: '/lehengas', height: 420 },
+  { id: 'f3', img: '/placeholders/fabric-3.jpg', url: '/sarees', height: 360 },
+  { id: 'f4', img: '/placeholders/fabric-4.jpg', url: '/sarees', height: 280 },
+  { id: 'f5', img: '/placeholders/fabric-5.jpg', url: '/lehengas', height: 380 },
+  { id: 'f6', img: '/placeholders/fabric-6.jpg', url: '/sarees', height: 300 }
+]
+
+const FLOWING_ITEMS = [
+  { link: '/sarees', text: 'Sarees', image: '/placeholders/fabric-1.jpg' },
+  { link: '/lehengas', text: 'Lehengas', image: '/placeholders/fabric-2.jpg' },
+  { link: '/collections', text: 'Collections', image: '/placeholders/fabric-3.jpg' },
+  { link: '/craft', text: 'Craft', image: '/placeholders/fabric-4.jpg' }
+]
+
+const PARTNER_LOGOS: LogoItem[] = [
+  { node: <span>Mulberry Boutique · Surat</span> },
+  { node: <span>Vastra &amp; Co · Mumbai</span> },
+  { node: <span>Nimbus · Bangalore</span> },
+  { node: <span>Kothari Textiles · Delhi</span> },
+  { node: <span>Ethnic Wardrobe · Kolkata</span> },
+  { node: <span>Shriji Silk House · Ahmedabad</span> },
+  { node: <span>House of Paisley · Chennai</span> },
+  { node: <span>Veda Atelier · Hyderabad</span> }
+]
+
+function BitRow({
+  index,
+  name,
+  restyle,
+  children,
+  height,
+}: {
+  index: string
+  name: string
+  restyle: string
+  children: React.ReactNode
+  height?: number
+}) {
+  return (
+    <div className="grid grid-cols-1 gap-6 border-t border-zari/25 py-12 lg:grid-cols-[260px_1fr]">
+      <div>
+        <p className="font-utility text-xs text-ink-soft">{index}</p>
+        <p className="mt-1 font-display text-xl">{name}</p>
+        <p className="mt-3 text-sm text-ink-soft">{restyle}</p>
+      </div>
+      <div className={cn('relative', height ? '' : '')} style={height ? { minHeight: height } : undefined}>
+        {children}
+      </div>
     </div>
   )
 }
@@ -253,6 +336,169 @@ export default function Styleguide() {
               </li>
             ))}
           </ul>
+        </div>
+
+        <SelvedgeRule />
+
+        {/* 7 · React Bits — integral to the system */}
+        <div className="section-y">
+          <SectionHeading
+            index="07"
+            title="React Bits — integral"
+            blurb="Eleven components vendored and restyled to the token system. Defaults rebased: Bodoni Moda captions, paper-deep or ink grounds, signature easing, 600–800ms durations, no rounding, no shadows — these look like Janani now."
+          />
+          <p className="mb-10 max-w-2xl text-base text-ink-soft">
+            Two notes for review: <span className="font-utility text-xs text-ink">ScrollReveal</span> and
+            <span className="font-utility text-xs text-ink"> SplitText</span> animate on entering the viewport,
+            so scroll into them. <span className="font-utility text-xs text-ink">LogoLoop</span>
+            stands in for the retired <em>InfiniteScroll</em>; both come from React Bits and serve the same
+            marquee intent.
+          </p>
+
+          <BitRow
+            index="01 · text"
+            name="SplitText"
+            restyle="Per-word tween, 0.8s, cubic-bezier(0.16,1,0.3,1), 24px travel. Under reduced motion the text appears without splitting."
+            height={120}
+          >
+            <SplitText
+              tag="h3"
+              text="The loom runs on discipline"
+              className="font-display text-3xl leading-[1.1]"
+            />
+          </BitRow>
+
+          <BitRow
+            index="02 · text"
+            name="BlurText"
+            restyle="Settled blur of 6px, two-step keyframes, 0.4s each step, 120ms stagger between words. Reduced motion renders a static line."
+            height={120}
+          >
+            <BlurText
+              text="Wholesale. Not retail."
+              className="font-display text-3xl leading-[1.1]"
+            />
+          </BitRow>
+
+          <BitRow
+            index="03 · scroll"
+            name="ScrollReveal"
+            restyle="Bodoni Moda 32 → 48, line-height 1.1, tracking tight. Rotation narrowed to 2°, blur 3px. Triggers and cleanups are scoped to the element — no leaks across sections."
+            height={220}
+          >
+            <div className="space-y-2 bg-paper-deep p-8">
+              <p className="font-utility text-xs text-ink-soft">Scroll the demo into view</p>
+              <ScrollReveal>Every weave carries the house mark</ScrollReveal>
+            </div>
+          </BitRow>
+
+          <BitRow
+            index="04 · entry"
+            name="AnimatedContent"
+            restyle="48px travel, 0.8s, signature easing, opacity-on. Container overlaying the entry is positioned lower on this page so the effect is visible on scroll."
+            height={180}
+          >
+            <AnimatedContent className="border border-zari/30 p-8">
+              <p className="font-utility text-xs text-ink-soft">JDT-2401 · Banarasi silk</p>
+              <p className="mt-3 font-display text-2xl">A counter that earns its place.</p>
+            </AnimatedContent>
+          </BitRow>
+
+          <BitRow
+            index="05 · entry"
+            name="FadeContent"
+            restyle="0.8s, signature easing, blur-on hidden at 6px. Disabled under reduced motion."
+            height={120}
+          >
+            <FadeContent className="border border-zari/30 p-6">
+              <p className="text-base">Twelve private-label cycles a year, all under one roof.</p>
+            </FadeContent>
+          </BitRow>
+
+          <BitRow
+            index="06 · accent"
+            name="ShinyText"
+            restyle="Zari shine on ink-or-paper type, six-second cycle, 160° spread, gentler anxiety. Stops under reduced motion."
+            height={120}
+          >
+            <ShinyText
+              text="Catalogue 2026 · request a copy"
+              className="font-display text-3xl leading-[1.1]"
+            />
+          </BitRow>
+
+          <BitRow
+            index="07 · gesture"
+            name="Magnet"
+            restyle="Subtler pull (strength 3), transitions retimed to 0.7s / 0.8s with the signature cubic-bezier. Disabled under reduced motion."
+            height={110}
+          >
+            <Magnet padding={80} magnetStrength={4}>
+              <button className="border border-zari px-10 py-5 font-utility text-sm uppercase tracking-[0.18em] text-ink hover:bg-zari hover:text-paper transition-colors duration-fast ease-[cubic-bezier(0.16,1,0.3,1)]">
+                Enquire
+              </button>
+            </Magnet>
+          </BitRow>
+
+          <BitRow
+            index="08 · gallery"
+            name="CircularGallery"
+            restyle="Square corners (borderRadius 0), Bodoni Moda caption 28px 400, ink text colour by default. Wheel input scoped to the carousel so the page never double-scrolls, uTime wave halts under reduced motion."
+            height={460}
+          >
+            <div className="h-[460px] w-full overflow-hidden border border-zari/25 bg-paper">
+              <CircularGallery
+                items={GALLERY_ITEMS}
+                bend={1.2}
+                textColor="#1a1a18"
+                font='400 22px "Bodoni Moda", serif'
+              />
+            </div>
+          </BitRow>
+
+          <BitRow
+            index="09 · grid"
+            name="Masonry"
+            restyle="No rounded corners, no drop shadow, no gradient overlay. Variable item heights, 24px gutter, hover scale at 0.97 with the signature easing, blue-focus reduced to 6px."
+            height={600}
+          >
+            <div className="h-[600px] w-full">
+              <Masonry items={MASONRY_ITEMS} />
+            </div>
+          </BitRow>
+
+          <BitRow
+            index="10 · nav"
+            name="FlowingMenu"
+            restyle="Full-screen overlay built on top of the house palette: ink ground, paper type, zari hairlines. Bodoni Moda 8vh link type, square image cells with a 1px zari/30 outline, marquee animation paused under reduced motion."
+            height={420}
+          >
+            <div className="h-[420px] w-full overflow-hidden border border-zari/25">
+              <FlowingMenu items={FLOWING_ITEMS} speed={15} />
+            </div>
+          </BitRow>
+
+          <BitRow
+            index="11 · marquee"
+            name="LogoLoop"
+            restyle="Stand-in for the retired InfiniteScroll. Default speed 60px/s, pause on hover, logo height 28px, gap 56px, monotonic heading rendered at 16px from the partner list. Grayscaled to 60% opacity, full opacity on hover."
+            height={80}
+          >
+            <div className="border border-zari/25 p-6">
+              <LogoLoop
+                logos={PARTNER_LOGOS}
+                renderItem={(item, _key) => (
+                  <span className="font-utility text-sm font-utility whitespace-nowrap text-ink opacity-60 transition-opacity duration-fast ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:opacity-100 hover:opacity-100">
+                    {(item as { node: React.ReactNode }).node}
+                  </span>
+                )}
+              />
+            </div>
+          </BitRow>
+
+          <p className="mt-12 font-utility text-xs text-ink-soft">
+            Source: github.com/DavidHDev/react-bits · MIT + Commons Clause — used as part of this product, not redistributed standalone.
+          </p>
         </div>
       </div>
     </main>

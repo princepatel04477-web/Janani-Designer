@@ -61,3 +61,22 @@ exclamation marks, checkout/cart/pricing.
 ## Voice
 Established family textile house — confident, plain, specific about capability.
 No marketing filler, no "elevate your inventory".
+
+## Component whitelist (Prompt 2 — locked)
+
+Only these React Bits components may be installed and styled into the site
+(code is vendored under `src/components/bits` with attribution headers):
+
+- **Text / motion**: SplitText, BlurText, ScrollReveal, AnimatedContent,
+  FadeContent, ShinyText
+- **Component**: CircularGallery, Masonry, FlowingMenu
+- **Plain**: Magnet
+- **Stand-in**: **LogoLoop** is used in place of the now-removed
+  React Bits "InfiniteScroll" component (Prompt 5 needs a logo marquee;
+  LogoLoop is the current canonical React-Bits marquee and ships with
+  reduced-motion handling).
+
+If a future prompt asks for anything even adjacent to **Ballpit, SplashCursor,
+LetterGlitch, DecryptedText, FaultyTerminal, Cubes, Lanyard, PixelTransition,
+Aurora, Iridescence, or any WebGL background** — say no. They read as
+tech-startup and are wrong for a textile house.
