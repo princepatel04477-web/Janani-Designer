@@ -6,7 +6,6 @@ import { usePrefersReducedMotion } from '../lib/useReducedMotion'
 import SplitText from '../components/bits/SplitText'
 import BlurText from '../components/bits/BlurText'
 import ShinyText from '../components/bits/ShinyText'
-import ScrollReveal from '../components/bits/ScrollReveal'
 import AnimatedContent from '../components/bits/AnimatedContent'
 import FadeContent from '../components/bits/FadeContent'
 import Magnet from '../components/bits/Magnet'
@@ -387,52 +386,6 @@ function SignatureCollections() {
   )
 }
 
-/* --------------------------------------------------------------------------
-   Craft section (Prompt 5 §4) — parallax pull quote
--------------------------------------------------------------------------- */
-
-function CraftSection() {
-  const ref = useRef<HTMLDivElement>(null)
-  const imgRef = useRef<HTMLDivElement>(null)
-  const [offset, setOffset] = useState(0)
-
-  useEffect(() => {
-    const onScroll = () => {
-      const el = ref.current
-      if (!el || !imgRef.current) return
-      const rect = el.getBoundingClientRect()
-      const vh = window.innerHeight
-      const total = rect.height + vh
-      const progress = Math.max(0, Math.min(1, (vh - rect.top) / total))
-      setOffset(progress * 0.15)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  return (
-    <section ref={ref} aria-label="Craft" className="relative isolate overflow-hidden">
-      <div
-        ref={imgRef}
-        className="absolute inset-0 -z-10 bg-cover bg-center"
-        style={{
-          backgroundImage: 'url(/placeholders/fabric-3.webp)',
-          transform: `translateY(${offset * 100}%)`
-        }}
-        aria-hidden
-      />
-      <div className="absolute inset-0 -z-10 bg-ink/55" aria-hidden />
-      <div className="container-site py-32 lg:py-40">
-        <div className="max-w-[20ch]">
-          <ScrollReveal>
-            Every weave carries the house mark — the same loom, the same bench, the same master.
-          </ScrollReveal>
-        </div>
-      </div>
-    </section>
-  )
-}
 
 /* --------------------------------------------------------------------------
    House Directory (FlowingMenu)
@@ -595,8 +548,6 @@ export default function Home() {
       <TwoBrandIntroductions />
       <SelvedgeRule />
       <SignatureCollections />
-      <SelvedgeRule />
-      <CraftSection />
       <SelvedgeRule />
       <HouseDirectory />
       <SelvedgeRule />
