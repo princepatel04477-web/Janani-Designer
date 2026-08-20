@@ -1,4 +1,4 @@
-import type { SVGProps } from 'react'
+import type { HTMLAttributes } from 'react'
 import { LogoWordmark } from './LogoWordmark'
 import { LogoMonogram } from './LogoMonogram'
 import { BRANDS } from '../../data/brands'
@@ -6,12 +6,12 @@ import { cn } from '../../lib/cn'
 
 export type FirmId = 'jdt' | 'jdw'
 
-export interface LogoProps extends Omit<SVGProps<SVGSVGElement>, 'height'> {
-  /** wordmark = JANANI. monogram = the rosette mark alone. lockup = wordmark + firm line. */
+export interface LogoProps extends HTMLAttributes<HTMLElement> {
+  /** wordmark = JANANI in Bodoni Moda. monogram = the rosette mark alone. lockup = wordmark + firm line. */
   variant?: 'wordmark' | 'monogram' | 'lockup'
   /** Only meaningful for variant="lockup". Drives the firm line and its accent. */
   firm?: FirmId
-  /** Height in px. Width follows the aspect ratio. */
+  /** Height or font-size in px. */
   height?: number
   /** Decorative instances get aria-hidden; parent link/button supplies name. */
   decorative?: boolean
@@ -20,7 +20,7 @@ export interface LogoProps extends Omit<SVGProps<SVGSVGElement>, 'height'> {
 
 /**
  * Logo — authoritative brand mark component for Janani textile house.
- * Renders only the mark with zero margin, zero link wrappers, and fill="currentColor".
+ * Supports the original Bodoni Moda wordmark, the house rosette monogram, and firm lockups.
  */
 export function Logo({
   variant = 'wordmark',
@@ -37,13 +37,13 @@ export function Logo({
         height={defaultHeight}
         className={className}
         aria-hidden={decorative ? 'true' : undefined}
-        {...props}
+        {...(props as any)}
       />
     )
   }
 
   if (variant === 'lockup' && firm) {
-    const defaultHeight = height ?? 24
+    const defaultHeight = height ?? 22
     const firmData = BRANDS[firm]
     const accentClass = firm === 'jdt' ? 'text-neel' : 'text-lac'
 
@@ -51,8 +51,9 @@ export function Logo({
       <div
         className={cn('inline-flex flex-col items-start', className)}
         aria-hidden={decorative ? 'true' : undefined}
+        {...props}
       >
-        <LogoWordmark height={defaultHeight} {...props} />
+        <LogoWordmark height={defaultHeight} />
         <div className="my-2 h-px w-full bg-zari opacity-40" aria-hidden="true" />
         <span
           className={cn(
@@ -66,7 +67,7 @@ export function Logo({
     )
   }
 
-  const defaultHeight = height ?? 28
+  const defaultHeight = height ?? 24
   return (
     <LogoWordmark
       height={defaultHeight}
