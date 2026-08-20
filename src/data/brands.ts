@@ -27,9 +27,9 @@ export const BRANDS: Record<'jdt' | 'jdw', Brand> = {
     accentHex: '#7A1F2B',
     product: 'lehengas',
     founded: 2016,
-    positioning: 'Wholesale designer lehengas, embroidered and finished in-house in Jaipur.',
+    positioning: 'Wholesale designer lehengas, embroidered and finished in-house in Surat.',
     story: [
-      `Janani Designer World was established in 2016 in Jaipur as a specialized designer lehenga manufacturing house. Over ${yearsSince2016} years, it has built state-of-the-art zardozi and embroidery floors.`,
+      `Janani Designer World was established in 2016 in Surat as a specialized designer lehenga manufacturing house. Over ${yearsSince2016} years, it has built state-of-the-art zardozi and embroidery floors.`,
       'The house produces twelve bridal and festive cycles a year, bringing master karigars together with contemporary design teams to deliver high-margin, heirloom bridal collections directly to premium retail buyers.'
     ],
     categories: ['Bridal', 'Reception', 'Sangeet', 'Festive', 'Lightweight']

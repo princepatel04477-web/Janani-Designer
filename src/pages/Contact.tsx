@@ -18,16 +18,22 @@ const FIRMS: FirmContact[] = [
     id: 'jdt',
     name: 'Janani Dreams TexFab Pvt Ltd',
     gst: 'GST 24ABCDE1234F1Z5',
-    address: ['Plot 17, GIDC Sachin', 'Surat 394230, Gujarat, India'],
+    address: [
+      '5165 to 5172, 5th Floor, Millennium Textile Market-4',
+      'Bhatena, Udhna, Surat, Gujarat, India'
+    ],
     phone: '+91 95867 21213',
     email: 'jananidreamstexfab@gmail.com',
-    visiting: 'Mon – Sat · 10:00 – 18:00 IST · by appointment'
+    visiting: 'Mon – Sat · 10:00 – 19:00 IST · by appointment'
   },
   {
     id: 'jdw',
     name: 'Janani Designer World',
-    gst: 'GST 08ABCDE5678G1Z9',
-    address: ['B-22, Sitapura Industrial Area', 'Jaipur 302022, Rajasthan, India'],
+    gst: 'GST 24ABCDE5678G1Z9',
+    address: [
+      '5165 to 5172, 5th Floor, Millennium Textile Market-4',
+      'Bhatena, Udhna, Surat, Gujarat, India'
+    ],
     phone: '+91 95867 21213',
     email: 'janani.sales.12@gmail.com',
     visiting: 'Mon – Sat · 10:00 – 19:00 IST · by appointment'
@@ -37,7 +43,7 @@ const FIRMS: FirmContact[] = [
 export default function Contact() {
   usePageMeta({
     title: 'Contact',
-    description: 'Janani showrooms in Surat and Jaipur, plus phone, email and a general enquiry form.'
+    description: 'Janani showroom in Surat, plus direct phone, email and a general enquiry form.'
   })
   
   const [form, setForm] = useState({ name: '', email: '', message: '' })
@@ -61,7 +67,7 @@ export default function Contact() {
         <div className="container-site py-20 lg:py-24">
           <p className="eyebrow">Contact</p>
           <h1 className="mt-6 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
-            Two firms, two floors. Pick the one you need.
+            Two firms, one showroom floor in Surat.
           </h1>
         </div>
       </section>
@@ -72,7 +78,7 @@ export default function Contact() {
         <div className="container-site grid grid-cols-1 gap-12 py-20 lg:grid-cols-2 lg:gap-20 lg:py-24">
           {FIRMS.map(f => {
             const waNumber = f.phone.replace(/\D/g, '')
-            const waHref = `https://wa.me/${waNumber}?text=${encodeURIComponent(`Hello Janani — please contact me about ${f.name}.`)}`
+            const waHref = `https://wa.me/${waNumber}?text=${encodeURIComponent(`Hello Janani — please contact me regarding ${f.name}.`)}`
 
             return (
               <div key={f.name} className="border border-zari/40 p-8 bg-paper">
@@ -123,7 +129,7 @@ export default function Contact() {
         <div className="container-site py-20 lg:py-24">
           <p className="eyebrow">General enquiry</p>
           <h2 className="mt-6 max-w-2xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
-            For retail partnerships, export accounts, or visiting both showrooms.
+            For retail partnerships, export accounts, or showroom visiting appointments.
           </h2>
 
           <div className="mt-12 max-w-xl">
@@ -202,22 +208,47 @@ export default function Contact() {
 
       <section className="bg-paper">
         <div className="container-site py-20 lg:py-24">
-          <p className="eyebrow">Visiting us</p>
+          <p className="eyebrow">Visiting the showroom</p>
           <h2 className="mt-6 max-w-2xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
             Showroom appointments are scheduled one day in advance.
           </h2>
-          <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2">
-            <div className="border border-zari/40 p-6 bg-paper">
-              <p className="font-utility text-xs uppercase tracking-[0.18em] text-neel font-semibold">Surat Showroom</p>
-              <p className="mt-2 font-display text-lg text-ink">Janani Dreams TexFab Pvt Ltd</p>
-              <p className="mt-1 text-sm text-ink-soft">Plot 17, GIDC Sachin, Surat, Gujarat 394230</p>
-              <p className="mt-4 text-xs font-utility text-ink-soft">20 mins from Surat Airport (STV) · 30 mins from Surat Railway Station</p>
-            </div>
-            <div className="border border-zari/40 p-6 bg-paper">
-              <p className="font-utility text-xs uppercase tracking-[0.18em] text-lac font-semibold">Jaipur Showroom</p>
-              <p className="mt-2 font-display text-lg text-ink">Janani Designer World</p>
-              <p className="mt-1 text-sm text-ink-soft">B-22, Sitapura Industrial Area, Jaipur, Rajasthan 302022</p>
-              <p className="mt-4 text-xs font-utility text-ink-soft">15 mins from Jaipur International Airport (JAI)</p>
+          <div className="mt-12 max-w-2xl">
+            <div className="border border-zari/40 p-8 bg-paper">
+              <div className="flex flex-wrap items-center gap-4">
+                <span className="font-utility text-xs uppercase tracking-[0.18em] text-neel font-semibold">
+                  Surat Central Showroom
+                </span>
+                <span className="font-utility text-xs text-ink-soft">·</span>
+                <span className="font-utility text-xs text-ink-soft">
+                  Wholesale Sarees &amp; Designer Lehengas
+                </span>
+              </div>
+              <p className="mt-3 font-display text-xl text-ink">
+                5165 to 5172, 5th Floor, Millennium Textile Market-4
+              </p>
+              <p className="mt-1 text-base text-ink">Bhatena, Udhna, Surat, Gujarat, India</p>
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-zari/20 pt-4 text-xs font-utility text-ink-soft">
+                <p>10 mins from Surat Railway Station</p>
+                <p>25 mins from Surat Airport (STV)</p>
+              </div>
+              <div className="mt-6 flex gap-4">
+                <a
+                  href="https://maps.google.com/?q=Millennium+Textile+Market-4+Bhatena+Surat"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="border border-ink px-6 py-2.5 font-utility text-xs uppercase tracking-[0.18em] text-ink hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
+                >
+                  Open in Maps →
+                </a>
+                <a
+                  href="https://wa.me/919586721213?text=Hello%20Janani%20—%20I%20would%20like%20to%20book%20a%20showroom%20appointment%20in%20Surat."
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="border border-ink px-6 py-2.5 font-utility text-xs uppercase tracking-[0.18em] bg-ink text-paper hover:bg-neel transition-colors duration-base ease-signature"
+                >
+                  Book Appointment
+                </a>
+              </div>
             </div>
           </div>
         </div>

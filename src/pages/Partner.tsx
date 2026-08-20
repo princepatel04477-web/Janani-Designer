@@ -29,7 +29,7 @@ const CUSTOMISATION = [
 ]
 
 const SHIPPING = [
-  { label: 'Pan-India', value: 'Door-to-door, 7 days from Surat or Jaipur.' },
+  { label: 'Pan-India', value: 'Door-to-door, 7 days from Surat.' },
   { label: 'Export — Gulf', value: 'FOB Mumbai and CIF Jebel Ali, 21 days.' },
   { label: 'Export — UK & Europe', value: 'FOB Mumbai, 28 days via sea.' },
   { label: 'Export — North America', value: 'FOB Mumbai, 35 days via sea or air on request.' }

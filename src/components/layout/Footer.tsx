@@ -17,12 +17,18 @@ export function Footer() {
           <FirmColumn
             firm="jdt"
             line="GST 24ABCDE1234F1Z5"
-            address={['Plot 17, GIDC Sachin', 'Surat 394230, Gujarat, India']}
+            address={[
+              '5165 to 5172, 5th Floor, Millennium Textile Market-4',
+              'Bhatena, Udhna, Surat, Gujarat, India'
+            ]}
           />
           <FirmColumn
             firm="jdw"
-            line="GST 08ABCDE5678G1Z9"
-            address={['B-22, Sitapura Industrial Area', 'Jaipur 302022, Rajasthan, India']}
+            line="GST 24ABCDE5678G1Z9"
+            address={[
+              '5165 to 5172, 5th Floor, Millennium Textile Market-4',
+              'Bhatena, Udhna, Surat, Gujarat, India'
+            ]}
           />
           <Column title="The house">
             <FooterLink to="/">Home</FooterLink>
@@ -38,7 +44,7 @@ export function Footer() {
             <li className="font-utility text-xs text-paper/70">Wholesale · +91 95867 21213</li>
             <li className="font-utility text-xs text-paper/70">Sarees · jananidreamstexfab@gmail.com</li>
             <li className="font-utility text-xs text-paper/70">Lehengas · janani.sales.12@gmail.com</li>
-            <li className="font-utility text-xs text-paper/70">Showrooms · Surat · Jaipur</li>
+            <li className="font-utility text-xs text-paper/70">Showroom · Surat</li>
             <li className="mt-4 flex gap-4 font-utility text-xs">
               <Link to="/partner" className="text-paper/70 hover:text-paper underline decoration-zari/60 underline-offset-4">
                 Catalogue 2026 (PDF)

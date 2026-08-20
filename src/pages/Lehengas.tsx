@@ -6,7 +6,7 @@ import { usePageMeta } from '../lib/usePageMeta'
 export default function Lehengas() {
   usePageMeta({
     title: 'Lehengas · Janani Designer World',
-    description: 'Wholesale designer lehengas from Janani Designer World — bridal, reception, sangeet, festive, lightweight, embroidered in Jaipur.',
+    description: 'Wholesale designer lehengas from Janani Designer World — bridal, reception, sangeet, festive, lightweight, embroidered in Surat.',
     image: '/og-lehengas.png'
   })
   const pieces = PIECES.filter(p => p.firm === 'jdw')

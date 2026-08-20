@@ -6,10 +6,10 @@ import AnimatedContent from '../components/bits/AnimatedContent'
 import { usePageMeta } from '../lib/usePageMeta'
 
 const TIMELINE = [
-  { year: 2016, text: 'Janani Dreams TexFab and Janani Designer World established in Surat and Jaipur.' },
-  { year: 2018, text: 'Second weaving shed added in Sachin GIDC; loom capacity expands to over 150 looms.' },
+  { year: 2016, text: 'Janani Dreams TexFab and Janani Designer World established in Surat.' },
+  { year: 2018, text: 'Second weaving shed added; loom capacity expands to over 150 looms.' },
   { year: 2020, text: 'Direct wholesale distribution established across retail boutiques and multi-brand buyers nationwide.' },
-  { year: 2022, text: 'Dedicated zardozi and hand-embroidery units commissioned on the Jaipur finishing floor.' },
+  { year: 2022, text: 'Dedicated zardozi and hand-embroidery units commissioned on the Surat finishing floor.' },
   { year: 2024, text: 'Loom capacity expands to 420 looms with 9,000 finished sarees and bridal pieces per month.' },
   { year: 2026, text: 'Twelve bridal and reception cycles a year; master karigars supplying leading retail boutiques across India.' }
 ]
@@ -37,15 +37,24 @@ export default function Craft() {
       <SelvedgeRule />
 
       <section className="bg-paper">
-        <div className="container-site mx-auto max-w-[65ch] py-20 lg:py-24">
-          <AnimatedContent distance={32}>
-            <p className="font-display text-xl leading-snug text-ink lg:text-2xl">
-              Janani started as one loom-room in Surat. The cloth runs across two firms now, but the rule that began it is still the rule: every loom under the roof is the firm's, never contract, and every karigar on the bench has a name.
+        <div className="container-site grid grid-cols-1 gap-12 py-20 lg:grid-cols-2 lg:gap-20 lg:py-28">
+          <div>
+            <p className="eyebrow">The loom</p>
+            <h2 className="mt-4 font-display text-2xl font-normal leading-tight text-ink lg:text-3xl">
+              Four hundred and twenty looms across two sheds. All owned. None contract.
+            </h2>
+          </div>
+          <div className="space-y-6 text-base leading-[1.7] text-ink-soft">
+            <p>
+              When a buyer places a forty-piece run with Janani, the warp is dressed in our shed,
+              on our beam, by weavers on our ledger. We do not subcontract overflow. When capacity
+              is full, we quote longer lead times rather than farm out to unknown looms.
             </p>
-            <p className="mt-10 text-base leading-[1.7] text-ink">
-              We do not commission weaving outside. We do not buy readymade and stamp the label. The weavers are on the roll, the finishers on the bench, and the embroidery house is a stone's throw from the loom-room. That is how a saree from JDT-2401 is the same saree in Surat and in Surat.
+            <p>
+              This is why a boutique owner can reorder a colourway eighteen months later and receive
+              the exact hand-feel and weight they sold the previous season.
             </p>
-          </AnimatedContent>
+          </div>
         </div>
       </section>
 
@@ -58,7 +67,7 @@ export default function Craft() {
           </ScrollReveal>
           <AnimatedContent distance={32} delay={0.2}>
             <p className="mt-12 text-base leading-[1.7] text-ink">
-              Inside the Surat shed, the warping, dyeing, weaving and finishing happen within sight of each other. A thread breaks in the loom and the weaver is at it before it leaves the reed. The finishing floor at Jaipur is laid out the same way — kalamkari first, then the embroidery shed, then the press, then the pack room. We have not changed the order in twenty-one years.
+              Inside the Surat shed, the warping, dyeing, weaving and finishing happen within sight of each other. A thread breaks in the loom and the weaver is at it before it leaves the reed. The lehenga finishing floor is laid out with equal care — design sampling first, then the embroidery shed, then the press, then the pack room.
             </p>
           </AnimatedContent>
         </div>
@@ -70,7 +79,7 @@ export default function Craft() {
         <div className="container-site py-20 lg:py-28">
           <p className="eyebrow">The record</p>
           <h2 className="mt-6 max-w-2xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
-            Thirty-nine years of continuous production across Surat and Jaipur.
+            Continuous production and craft excellence under one roof in Surat.
           </h2>
           <div className="mt-16 divide-y divide-zari/30 border-y border-zari/30">
             {TIMELINE.map(item => (
@@ -88,13 +97,12 @@ export default function Craft() {
 
 function FullBleed({ image, alt }: { image: string; alt: string }) {
   return (
-    <section className="relative h-[50vh] w-full overflow-hidden bg-ink">
+    <div className="relative h-[50vh] min-h-[360px] w-full overflow-hidden bg-ink">
       <Picture
         src={image}
         alt={alt}
-        className="h-full w-full object-cover object-center opacity-85"
-        loading="lazy"
+        className="h-full w-full object-cover object-center"
       />
-    </section>
+    </div>
   )
 }
