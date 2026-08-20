@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useBasket } from '../../context/BasketContext'
+import { Logo } from '../brand/Logo'
 import Magnet from '../bits/Magnet'
 import { cn } from '../../lib/cn'
 
@@ -88,11 +89,12 @@ export function Navbar() {
             to="/"
             aria-label="Janani — back to home"
             className={cn(
-              'font-display text-2xl tracking-[0.32em] focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-4',
+              'inline-flex items-center focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-4',
               transparent ? 'text-paper' : 'text-ink'
             )}
           >
-            JANANI
+            <Logo variant="wordmark" decorative height={24} className="hidden md:block" />
+            <Logo variant="monogram" decorative height={28} className="block md:hidden" />
           </Link>
 
           <nav className="hidden flex-1 items-center justify-end gap-8 text-sm md:flex" aria-label="Main Navigation Right">
@@ -129,14 +131,17 @@ export function Navbar() {
             </Magnet>
           </nav>
 
+          {/* Mobile hamburger */}
           <button
             type="button"
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setMobileOpen(o => !o)}
             aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen(v => !v)}
+            aria-label="Toggle site navigation"
             className={cn(
-              'md:hidden font-utility text-xs uppercase tracking-[0.2em] transition-opacity hover:opacity-70 p-2 focus-visible:outline-2 focus-visible:outline-ink',
-              transparent ? 'text-paper' : 'text-ink'
+              'border px-3 py-1 font-utility text-xs uppercase tracking-[0.18em] transition-colors md:hidden focus-visible:outline-2 focus-visible:outline-ink',
+              transparent
+                ? 'border-paper/60 text-paper hover:bg-paper hover:text-ink'
+                : 'border-zari/60 text-ink hover:bg-ink hover:text-paper'
             )}
           >
             {mobileOpen ? 'Close' : 'Menu'}
@@ -173,14 +178,15 @@ function MobileOverlay({ open, onClose }: { open: boolean; onClose: () => void }
 
   return (
     <div className="fixed inset-0 z-50 md:hidden flex flex-col bg-ink text-paper" role="dialog" aria-modal="true" aria-label="Site menu">
-      {/* Top action header with explicit, accessible Close button */}
+      {/* Top action header with explicit, accessible Close button & house monogram */}
       <div className="flex h-16 items-center justify-between px-6 border-b border-zari/30 relative z-20">
         <Link
           to="/"
           onClick={onClose}
-          className="font-display text-xl tracking-[0.28em] text-paper focus-visible:outline-2 focus-visible:outline-paper"
+          aria-label="Janani — back to home"
+          className="inline-flex items-center text-paper focus-visible:outline-2 focus-visible:outline-paper"
         >
-          JANANI
+          <Logo variant="monogram" decorative height={32} />
         </Link>
         <button
           type="button"
@@ -208,21 +214,25 @@ function MobileMenuList({
 }) {
   return (
     <nav className="flex min-h-full flex-col" aria-label="Mobile site menu">
-      {items.map(item => (
+      {items.map((item, idx) => (
         <Link
           key={item.link}
           to={item.link}
           onClick={onItemClick}
-          className="group relative flex flex-1 items-center justify-center min-h-[72px] overflow-hidden border-b border-zari/30 font-display text-3xl font-normal leading-none tracking-tight focus-visible:outline-2 focus-visible:outline-paper"
+          className={cn(
+            'group relative flex min-h-[72px] flex-1 items-center justify-between px-6 py-4 transition-colors hover:bg-paper hover:text-ink border-b border-zari/20',
+            idx === 0 && 'border-t border-zari/20'
+          )}
         >
-          <span className="relative z-10 transition-transform duration-slow ease-signature group-hover:-translate-y-1">
+          <span className="font-display text-2xl font-normal tracking-tight sm:text-3xl">
             {item.text}
           </span>
           <span
             aria-hidden
-            className="absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-slow ease-signature group-hover:opacity-30"
-            style={{ backgroundImage: `url(${item.image})` }}
-          />
+            className="font-utility text-xs uppercase tracking-[0.18em] opacity-40 transition-opacity group-hover:opacity-100"
+          >
+            →
+          </span>
         </Link>
       ))}
     </nav>

@@ -1,15 +1,17 @@
 import { useEffect } from 'react'
 
-interface Meta {
+export interface Meta {
   title: string
   description: string
+  image?: string
   robots?: string
 }
 
 const DEFAULTS: Meta = {
   title: 'Janani — wholesale sarees & designer lehengas',
   description:
-    'Two firms, one loom-room. Janani supplies wholesale sarees and designer lehengas to boutiques, multi-brand stores and export buyers across India.'
+    'Two firms, one loom-room. Janani supplies wholesale sarees and designer lehengas to boutiques, multi-brand stores and export buyers across India.',
+  image: '/og-default.png'
 }
 
 export function usePageMeta(meta: Partial<Meta>) {
@@ -18,11 +20,14 @@ export function usePageMeta(meta: Partial<Meta>) {
     document.title = title
     const desc = meta.description ?? DEFAULTS.description
     
-    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://janani.in'
-    const currentUrl = typeof window !== 'undefined' ? window.location.href : baseUrl
-    const ogImageUrl = `${baseUrl}/hero-sarees.webp`
+    const origin = typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'https://janani-designer.vercel.app'
+    const currentUrl = typeof window !== 'undefined' && window.location?.href ? window.location.href : origin
+    
+    const imagePath = meta.image ?? DEFAULTS.image ?? '/og-default.png'
+    const ogImageUrl = imagePath.startsWith('http') ? imagePath : new URL(imagePath, origin).href
 
     setMeta('description', desc)
+    setMeta('og:site_name', 'Janani', 'property')
     setMeta('og:title', title, 'property')
     setMeta('og:description', desc, 'property')
     setMeta('og:url', currentUrl, 'property')
@@ -41,9 +46,8 @@ export function usePageMeta(meta: Partial<Meta>) {
       setMeta('robots', 'index, follow', 'name')
     }
 
-    // Notice: Do NOT reset document.title to DEFAULTS.title on cleanup
-    // to prevent jarring title flashing during route transitions.
-  }, [meta.title, meta.description, meta.robots])
+    // No document.title reset on cleanup to avoid title flashing between routes.
+  }, [meta.title, meta.description, meta.image, meta.robots])
 }
 
 function setMeta(name: string, value: string, attr: 'name' | 'property' = 'name') {

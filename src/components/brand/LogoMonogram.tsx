@@ -1,0 +1,26 @@
+import type { SVGProps } from 'react'
+
+interface LogoMonogramProps extends SVGProps<SVGSVGElement> {
+  height?: number
+}
+
+/**
+ * LogoMonogram — the Janani 8-petal woven rosette emblem.
+ * Rendered inline with fill="currentColor" (zero hardcoded hex).
+ */
+export function LogoMonogram({ height = 28, className, ...props }: LogoMonogramProps) {
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      height={height}
+      width={height}
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+      {...props}
+    >
+      <path fillRule="evenodd" clipRule="evenodd" d="M 50 4 C 59 17 65 30 50 46 C 35 30 41 17 50 4 Z M 50 14 C 45 23 43 30 50 38 C 57 30 55 23 50 14 Z M 50 96 C 41 83 35 70 50 54 C 65 70 59 83 50 96 Z M 50 86 C 55 77 57 70 50 62 C 43 70 45 77 50 86 Z M 96 50 C 83 59 70 65 54 50 C 70 35 83 41 96 50 Z M 86 50 C 77 55 70 57 62 50 C 70 43 77 45 86 50 Z M 4 50 C 17 41 30 35 46 50 C 30 65 17 59 4 50 Z M 14 50 C 23 45 30 43 38 50 C 30 57 23 55 14 50 Z M 82.5 17.5 C 83 34 72 44 50 50 C 56 28 66 17 82.5 17.5 Z M 73.5 26.5 C 63 28 58 35 55 45 C 65 42 72 37 73.5 26.5 Z M 17.5 17.5 C 34 17 44 28 50 50 C 28 44 17 34 17.5 17.5 Z M 26.5 26.5 C 28 37 35 42 45 45 C 42 35 37 28 26.5 26.5 Z M 82.5 82.5 C 66 83 56 72 50 50 C 72 56 83 66 82.5 82.5 Z M 73.5 73.5 C 72 63 65 58 55 55 C 58 65 63 72 73.5 73.5 Z M 17.5 82.5 C 17 66 28 56 50 50 C 44 72 34 83 17.5 82.5 Z M 26.5 73.5 C 37 72 42 65 45 55 C 35 58 28 63 26.5 73.5 Z M 50 46 L 54 50 L 50 54 L 46 50 Z" />
+    </svg>
+  )
+}

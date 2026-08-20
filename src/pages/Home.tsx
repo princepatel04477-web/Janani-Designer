@@ -13,6 +13,7 @@ import Magnet from '../components/bits/Magnet'
 import FlowingMenu from '../components/bits/FlowingMenu'
 import CircularGallery from '../components/bits/CircularGallery'
 import LogoLoop, { type LogoItem } from '../components/bits/LogoLoop'
+import { Logo } from '../components/brand/Logo'
 import { SelvedgeRule } from '../components/SelvedgeRule'
 import { Picture } from '../components/Picture'
 import { BRANDS } from '../data/brands'
@@ -158,6 +159,7 @@ function HeroPanel({
         transition={{ duration: reducedMotion ? 0 : 0.7, ease: EASE }}
         className="absolute inset-x-0 bottom-0 z-10 px-6 pb-16 pt-24 text-paper sm:px-10 lg:px-16"
       >
+        <Logo variant="monogram" decorative height={28} className="mb-4 text-paper opacity-90" />
         <p className="font-utility text-xs uppercase tracking-[0.18em] text-paper/80">
           {eyebrow}
         </p>

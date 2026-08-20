@@ -11,6 +11,7 @@ import CircularGallery from '../components/bits/CircularGallery'
 import Masonry from '../components/bits/Masonry'
 import FlowingMenu from '../components/bits/FlowingMenu'
 import LogoLoop, { type LogoItem } from '../components/bits/LogoLoop'
+import { Logo } from '../components/brand/Logo'
 import { usePageMeta } from '../lib/usePageMeta'
 
 /* ---------------------------------------------------------------------------
@@ -161,6 +162,99 @@ export default function Styleguide() {
           the selvedge rule — reviewed here before any page is built.
         </p>
         <div className="mt-16" />
+        <SelvedgeRule />
+
+        {/* 0 · The mark */}
+        <div className="section-y">
+          <SectionHeading
+            index="00"
+            title="The mark"
+            blurb="One house mark, three variants, two firm lockups. Inline vector SVG with fill='currentColor'. Zero hardcoded hex. Scaled via viewBox with strict clear space."
+          />
+          
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            {/* On --paper ground */}
+            <div className="border border-zari/30 bg-paper p-8">
+              <p className="eyebrow mb-6 text-ink-soft">On --paper ground (15:1 contrast)</p>
+              
+              <div className="space-y-8">
+                <div>
+                  <span className="font-utility text-xs text-ink-soft block mb-2">Wordmark (default 28px)</span>
+                  <div className="inline-block p-4 border border-dashed border-zari/40">
+                    <Logo variant="wordmark" height={28} className="text-ink" decorative />
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-utility text-xs text-ink-soft block mb-2">Monogram (default 28px · min 20px)</span>
+                  <div className="flex items-center gap-6">
+                    <div className="inline-block p-3 border border-dashed border-zari/40">
+                      <Logo variant="monogram" height={28} className="text-ink" decorative />
+                    </div>
+                    <div className="inline-block p-2 border border-dashed border-zari/40">
+                      <Logo variant="monogram" height={20} className="text-ink" decorative />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-zari/20">
+                  <div>
+                    <span className="font-utility text-xs text-ink-soft block mb-2">Lockup · Janani Dreams TexFab</span>
+                    <Logo variant="lockup" firm="jdt" height={22} className="text-ink" decorative />
+                  </div>
+                  <div>
+                    <span className="font-utility text-xs text-ink-soft block mb-2">Lockup · Janani Designer World</span>
+                    <Logo variant="lockup" firm="jdw" height={22} className="text-ink" decorative />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* On --ink ground */}
+            <div className="border border-zari/30 bg-ink p-8 text-paper">
+              <p className="eyebrow mb-6 text-paper/60">On --ink ground (15:1 contrast)</p>
+              
+              <div className="space-y-8">
+                <div>
+                  <span className="font-utility text-xs text-paper/60 block mb-2">Wordmark (default 28px)</span>
+                  <div className="inline-block p-4 border border-dashed border-zari/40">
+                    <Logo variant="wordmark" height={28} className="text-paper" decorative />
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-utility text-xs text-paper/60 block mb-2">Monogram (default 28px · min 20px)</span>
+                  <div className="flex items-center gap-6">
+                    <div className="inline-block p-3 border border-dashed border-zari/40">
+                      <Logo variant="monogram" height={28} className="text-paper" decorative />
+                    </div>
+                    <div className="inline-block p-2 border border-dashed border-zari/40">
+                      <Logo variant="monogram" height={20} className="text-paper" decorative />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-paper/20">
+                  <div>
+                    <span className="font-utility text-xs text-paper/60 block mb-2">Lockup · Janani Dreams TexFab</span>
+                    <Logo variant="lockup" firm="jdt" height={22} className="text-paper" decorative />
+                  </div>
+                  <div>
+                    <span className="font-utility text-xs text-paper/60 block mb-2">Lockup · Janani Designer World</span>
+                    <Logo variant="lockup" firm="jdw" height={22} className="text-paper" decorative />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <SpecRow label="clear space">1x cap-height on all 4 sides, bounded by a 1px zari hairline</SpecRow>
+            <SpecRow label="min height">Monogram: 20px · Wordmark: 28px</SpecRow>
+            <SpecRow label="color rule">Inherits parent text-ink or text-paper class. Zari is never a fill on the mark.</SpecRow>
+          </div>
+        </div>
+
         <SelvedgeRule />
 
         {/* 1 · Colour */}

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { FIRM_LABELS } from '../data/brands'
+import { Logo } from '../components/brand/Logo'
 import { usePageMeta } from '../lib/usePageMeta'
 import { SelvedgeRule } from '../components/SelvedgeRule'
 
@@ -13,6 +14,9 @@ export default function NotFoundPage() {
     <>
       <section className="bg-paper">
         <div className="container-site py-32 text-center">
+          <div className="mb-8 flex justify-center">
+            <Logo variant="wordmark" height={36} className="text-ink" decorative />
+          </div>
           <p className="eyebrow">404 · Not Found</p>
           <h1 className="mt-6 font-display text-4xl text-ink">The requested page is not on the floor.</h1>
           <p className="mt-4 text-ink-soft max-w-md mx-auto">

@@ -1,19 +1,26 @@
 import { Link } from 'react-router-dom'
 import { SelvedgeRule } from '../SelvedgeRule'
+import { Logo, type FirmId } from '../brand/Logo'
 
 export function Footer() {
   return (
     <footer className="bg-ink text-paper">
       <div className="container-site">
         <SelvedgeRule />
-        <div className="grid grid-cols-1 gap-12 py-20 lg:grid-cols-[1.2fr_1fr_1fr_1fr]">
+        
+        {/* House wordmark above column grid */}
+        <div className="pt-16 pb-8">
+          <Logo variant="wordmark" height={32} className="text-paper" decorative />
+        </div>
+
+        <div className="grid grid-cols-1 gap-12 pb-20 pt-8 lg:grid-cols-[1.2fr_1fr_1fr_1fr]">
           <FirmColumn
-            name="Janani Dreams TexFab Pvt Ltd"
+            firm="jdt"
             line="GST 24ABCDE1234F1Z5"
             address={['Plot 17, GIDC Sachin', 'Surat 394230, Gujarat, India']}
           />
           <FirmColumn
-            name="Janani Designer World"
+            firm="jdw"
             line="GST 08ABCDE5678G1Z9"
             address={['B-22, Sitapura Industrial Area', 'Jaipur 302022, Rajasthan, India']}
           />
@@ -59,18 +66,18 @@ function Column({ title, children }: { title: string; children: React.ReactNode 
 }
 
 function FirmColumn({
-  name,
+  firm,
   line,
   address
 }: {
-  name: string
+  firm: FirmId
   line: string
   address: string[]
 }) {
   return (
     <div>
-      <p className="font-display text-xl leading-tight">{name}</p>
-      <p className="mt-3 font-utility text-xs text-paper/60">{line}</p>
+      <Logo variant="lockup" firm={firm} height={20} className="text-paper" decorative />
+      <p className="mt-4 font-utility text-xs text-paper/60">{line}</p>
       <div className="mt-4 text-sm leading-relaxed text-paper/80 space-y-1">
         {address.map((line, i) => (
           <p key={i}>

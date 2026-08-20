@@ -1,9 +1,21 @@
 import { useState } from 'react'
 import { SelvedgeRule } from '../components/SelvedgeRule'
+import { Logo, type FirmId } from '../components/brand/Logo'
 import { usePageMeta } from '../lib/usePageMeta'
 
-const FIRMS = [
+interface FirmContact {
+  id: FirmId
+  name: string
+  gst: string
+  address: string[]
+  phone: string
+  email: string
+  visiting: string
+}
+
+const FIRMS: FirmContact[] = [
   {
+    id: 'jdt',
     name: 'Janani Dreams TexFab Pvt Ltd',
     gst: 'GST 24ABCDE1234F1Z5',
     address: ['Plot 17, GIDC Sachin', 'Surat 394230, Gujarat, India'],
@@ -12,6 +24,7 @@ const FIRMS = [
     visiting: 'Mon – Sat · 10:00 – 18:00 IST · by appointment'
   },
   {
+    id: 'jdw',
     name: 'Janani Designer World',
     gst: 'GST 08ABCDE5678G1Z9',
     address: ['B-22, Sitapura Industrial Area', 'Jaipur 302022, Rajasthan, India'],
@@ -63,8 +76,8 @@ export default function Contact() {
 
             return (
               <div key={f.name} className="border border-zari/40 p-8 bg-paper">
-                <p className="font-display text-2xl text-ink">{f.name}</p>
-                <p className="mt-3 font-utility text-xs text-ink-soft">{f.gst}</p>
+                <Logo variant="lockup" firm={f.id} height={24} className="text-ink" decorative />
+                <p className="mt-4 font-utility text-xs text-ink-soft">{f.gst}</p>
                 <ul className="mt-6 space-y-1 text-base text-ink">
                   {f.address.map((line, i) => <li key={i}>{line}</li>)}
                 </ul>
@@ -82,14 +95,22 @@ export default function Contact() {
                     <dd className="text-ink">{f.visiting}</dd>
                   </div>
                 </dl>
-                <a
-                  href={waHref}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="mt-8 inline-flex items-center border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] text-ink hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
-                >
-                  Chat on WhatsApp
-                </a>
+                <div className="mt-6 flex flex-wrap gap-4">
+                  <a
+                    href={`tel:${f.phone.replace(/\s/g, '')}`}
+                    className="border border-ink px-5 py-2 font-utility text-xs uppercase tracking-[0.18em] text-ink hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
+                  >
+                    Call
+                  </a>
+                  <a
+                    href={waHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="border border-ink px-5 py-2 font-utility text-xs uppercase tracking-[0.18em] text-ink hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
+                  >
+                    WhatsApp
+                  </a>
+                </div>
               </div>
             )
           })}
@@ -98,27 +119,81 @@ export default function Contact() {
 
       <SelvedgeRule />
 
-      {/* Showroom locations */}
       <section className="bg-paper-deep">
-        <div className="container-site py-12 lg:py-16">
-          <div
-            role="region"
-            aria-label="Surat and Jaipur showroom coordinates"
-            className="relative aspect-[21/9] w-full overflow-hidden border border-zari/40 bg-paper-deep flex items-center justify-center text-ink-soft"
-          >
-            <div className="text-center p-6">
-              <p className="font-display text-xl text-ink">Showroom Locations</p>
-              <div className="mt-4 flex flex-col sm:flex-row gap-6 justify-center">
-                <div className="border border-zari/30 bg-paper p-4">
-                  <p className="font-utility text-xs font-semibold text-ink">Surat Weaving Sheds</p>
-                  <p className="mt-1 font-utility text-xs text-ink-soft">21.17° N · 72.83° E · Sachin GIDC</p>
-                </div>
-                <div className="border border-zari/30 bg-paper p-4">
-                  <p className="font-utility text-xs font-semibold text-ink">Jaipur Finishing Floor</p>
-                  <p className="mt-1 font-utility text-xs text-ink-soft">26.91° N · 75.79° E · Sitapura</p>
-                </div>
+        <div className="container-site py-20 lg:py-24">
+          <p className="eyebrow">General enquiry</p>
+          <h2 className="mt-6 max-w-2xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
+            For retail partnerships, export accounts, or visiting both showrooms.
+          </h2>
+
+          <div className="mt-12 max-w-xl">
+            {submitted ? (
+              <div className="border border-zari/60 bg-paper p-8">
+                <p className="font-display text-2xl text-ink">Thank you</p>
+                <p className="mt-3 text-base text-ink-soft">
+                  We have received your note. The trade desk will respond within four working hours.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSubmitted(false)}
+                  className="mt-6 border border-ink px-6 py-2.5 font-utility text-xs uppercase tracking-[0.18em] text-ink hover:bg-ink hover:text-paper transition-colors"
+                >
+                  Send another message
+                </button>
               </div>
-            </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="contact-name" className="block font-utility text-xs uppercase tracking-[0.18em] text-ink">
+                    Name / Store
+                  </label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    required
+                    value={form.name}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    className="mt-2 w-full border border-zari/60 bg-paper px-4 py-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="contact-email" className="block font-utility text-xs uppercase tracking-[0.18em] text-ink">
+                    Email
+                  </label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                    className="mt-2 w-full border border-zari/60 bg-paper px-4 py-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="contact-message" className="block font-utility text-xs uppercase tracking-[0.18em] text-ink">
+                    Message
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    rows={4}
+                    required
+                    value={form.message}
+                    onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                    className="mt-2 w-full border border-zari/60 bg-paper px-4 py-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="border border-ink px-8 py-3.5 font-utility text-xs uppercase tracking-[0.18em] bg-ink text-paper hover:bg-neel transition-colors duration-base ease-signature disabled:opacity-50"
+                >
+                  {submitting ? 'Sending...' : 'Send message'}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>
@@ -126,66 +201,25 @@ export default function Contact() {
       <SelvedgeRule />
 
       <section className="bg-paper">
-        <div className="container-site max-w-2xl py-20 lg:py-24">
-          <p className="eyebrow">General enquiry</p>
-          <h2 className="mt-6 font-display text-2xl font-normal leading-[1.1] tracking-tight lg:text-3xl">
-            Not a bulk buyer? Drop a line.
+        <div className="container-site py-20 lg:py-24">
+          <p className="eyebrow">Visiting us</p>
+          <h2 className="mt-6 max-w-2xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
+            Showroom appointments are scheduled one day in advance.
           </h2>
-          {submitted ? (
-            <div className="mt-10 border border-ink bg-paper p-6 text-ink">
-              <p className="font-display text-xl">Thank you for your message.</p>
-              <p className="mt-2 text-ink-soft">The house will reply within one business day.</p>
-              <button
-                type="button"
-                onClick={() => setSubmitted(false)}
-                className="mt-6 border border-ink px-6 py-2 font-utility text-xs uppercase tracking-[0.18em] hover:bg-ink hover:text-paper transition-colors"
-              >
-                Send another message
-              </button>
+          <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2">
+            <div className="border border-zari/40 p-6 bg-paper">
+              <p className="font-utility text-xs uppercase tracking-[0.18em] text-neel font-semibold">Surat Showroom</p>
+              <p className="mt-2 font-display text-lg text-ink">Janani Dreams TexFab Pvt Ltd</p>
+              <p className="mt-1 text-sm text-ink-soft">Plot 17, GIDC Sachin, Surat, Gujarat 394230</p>
+              <p className="mt-4 text-xs font-utility text-ink-soft">20 mins from Surat Airport (STV) · 30 mins from Surat Railway Station</p>
             </div>
-          ) : (
-            <form className="mt-10 space-y-8" onSubmit={handleSubmit}>
-              <label className="block">
-                <span className="font-utility text-xs text-ink-soft">Your name <span aria-hidden style={{ color: 'var(--lac)' }}>*</span></span>
-                <input
-                  name="name"
-                  value={form.name}
-                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                  className="mt-3 block w-full border-b border-zari/60 bg-transparent py-3 text-base text-ink focus:border-ink focus-visible:outline-none"
-                  required
-                />
-              </label>
-              <label className="block">
-                <span className="font-utility text-xs text-ink-soft">Your email <span aria-hidden style={{ color: 'var(--lac)' }}>*</span></span>
-                <input
-                  name="email"
-                  type="email"
-                  value={form.email}
-                  onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                  className="mt-3 block w-full border-b border-zari/60 bg-transparent py-3 text-base text-ink focus:border-ink focus-visible:outline-none"
-                  required
-                />
-              </label>
-              <label className="block">
-                <span className="font-utility text-xs text-ink-soft">Message <span aria-hidden style={{ color: 'var(--lac)' }}>*</span></span>
-                <textarea
-                  name="message"
-                  rows={4}
-                  value={form.message}
-                  onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-                  className="mt-3 block w-full border-b border-zari/60 bg-transparent py-3 text-base text-ink focus:border-ink focus-visible:outline-none"
-                  required
-                />
-              </label>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="border border-ink px-8 py-4 font-utility text-xs uppercase tracking-[0.18em] bg-ink text-paper hover:bg-neel transition-colors duration-base ease-signature disabled:opacity-50"
-              >
-                {submitting ? 'Sending…' : 'Send'}
-              </button>
-            </form>
-          )}
+            <div className="border border-zari/40 p-6 bg-paper">
+              <p className="font-utility text-xs uppercase tracking-[0.18em] text-lac font-semibold">Jaipur Showroom</p>
+              <p className="mt-2 font-display text-lg text-ink">Janani Designer World</p>
+              <p className="mt-1 text-sm text-ink-soft">B-22, Sitapura Industrial Area, Jaipur, Rajasthan 302022</p>
+              <p className="mt-4 text-xs font-utility text-ink-soft">15 mins from Jaipur International Airport (JAI)</p>
+            </div>
+          </div>
         </div>
       </section>
     </>

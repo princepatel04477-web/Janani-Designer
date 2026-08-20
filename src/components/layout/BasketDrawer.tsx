@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useBasket } from '../../context/BasketContext'
 import { BRANDS } from '../../data/brands'
+import { Logo } from '../brand/Logo'
 import { Picture } from '../Picture'
 import { cn } from '../../lib/cn'
 
@@ -87,7 +88,10 @@ export function BasketDrawer() {
         )}
       >
         <div className="flex items-center justify-between border-b border-zari/30 px-6 py-5">
-          <p className="eyebrow">Enquiry basket</p>
+          <div className="flex items-center gap-3">
+            <Logo variant="monogram" decorative height={24} className="text-ink" />
+            <p className="eyebrow">Enquiry basket</p>
+          </div>
           <button
             data-autofocus
             type="button"
