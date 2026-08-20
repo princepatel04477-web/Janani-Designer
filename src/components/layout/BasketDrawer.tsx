@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useBasket } from '../../context/BasketContext'
 import { BRANDS } from '../../data/brands'
+import { Picture } from '../Picture'
 import { cn } from '../../lib/cn'
 
 /**
@@ -119,7 +120,13 @@ export function BasketDrawer() {
                 <ul className="divide-y divide-zari/30 border-y border-zari/30">
                   {grouped[firmId].map(item => (
                     <li key={`${item.code}-${item.colourway}`} className="grid grid-cols-[64px_1fr_auto] gap-4 py-4">
-                      <div className="aspect-[3/4] bg-cover bg-center border border-zari/30" style={{ backgroundImage: `url(${item.image})` }} aria-hidden />
+                      <div className="aspect-[3/4] overflow-hidden border border-zari/30">
+                        <Picture
+                          src={item.image}
+                          alt={item.name}
+                          className="h-full w-full object-cover object-center"
+                        />
+                      </div>
                       <div>
                         <p className="font-utility text-sm text-ink font-semibold">{item.code}</p>
                         <p className="mt-1 text-sm text-ink">{item.name}</p>

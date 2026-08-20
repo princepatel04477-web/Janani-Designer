@@ -131,19 +131,19 @@ function HeroPanel({
       transition={{ duration: reducedMotion ? 0 : 0.7, ease: EASE }}
       className="relative isolate h-1/2 overflow-hidden bg-ink lg:h-full lg:flex-[1_1_0%]"
     >
-      <picture>
-        <source srcSet={image.replace(/\.webp$/, '.avif')} type="image/avif" />
-        <motion.img
+      <motion.div
+        animate={{ scale: !reducedMotion && isHovered ? 1.05 : 1 }}
+        transition={{ duration: reducedMotion ? 0 : 0.7, ease: EASE }}
+        className="absolute inset-0 h-full w-full"
+      >
+        <Picture
           src={image}
           alt={alt}
           loading="eager"
           fetchPriority="high"
-          decoding="async"
-          animate={{ scale: !reducedMotion && isHovered ? 1.05 : 1 }}
-          transition={{ duration: reducedMotion ? 0 : 0.7, ease: EASE }}
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="h-full w-full object-cover object-center"
         />
-      </picture>
+      </motion.div>
       <motion.div
         aria-hidden
         animate={{ opacity: isHovered ? 0.7 : 0.85 }}

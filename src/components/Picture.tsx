@@ -1,7 +1,6 @@
 /**
- * Picture — sources the supplied `jpg` path as AVIF and WebP siblings when
- * present in /public, with the JPEG as the fallback. Falls back to a plain
- * <img> if the variant files don't exist (e.g. for very old assets).
+ * Picture — sources the supplied path as AVIF and WebP siblings when
+ * present in /public, with WebP / supplied source as fallback.
  */
 interface PictureProps {
   src: string
@@ -24,16 +23,17 @@ export function Picture({
   width,
   height
 }: PictureProps) {
-  const base = src.replace(/\.(jpe?g|png)$/i, '')
+  // Strip any existing extension (.webp, .avif, .jpg, .jpeg, .png)
+  const base = src.replace(/\.(jpe?g|png|webp|avif)$/i, '')
   const avif = `${base}.avif`
   const webp = `${base}.webp`
-  const fallback = src
+  
   return (
     <picture>
       <source srcSet={avif} type="image/avif" />
       <source srcSet={webp} type="image/webp" />
       <img
-        src={fallback}
+        src={webp}
         alt={alt}
         className={className}
         loading={loading}
