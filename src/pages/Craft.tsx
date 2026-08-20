@@ -1,8 +1,8 @@
 import { SelvedgeRule } from '../components/SelvedgeRule'
-import { Picture } from '../components/Picture'
+import { ImageDrape } from '../components/motion/ImageDrape'
+import { Reveal } from '../components/motion/Reveal'
 import ScrollReveal from '../components/bits/ScrollReveal'
 import BlurText from '../components/bits/BlurText'
-import AnimatedContent from '../components/bits/AnimatedContent'
 import { usePageMeta } from '../lib/usePageMeta'
 
 const TIMELINE = [
@@ -24,13 +24,15 @@ export default function Craft() {
     <>
       <section className="bg-paper">
         <div className="container-site py-20 lg:py-24">
-          <p className="eyebrow">Craft and legacy</p>
-          <BlurText
-            tag="h1"
-            text="Two firms, one ledger, master karigars on the same benches."
-            className="mt-6 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl"
-            delay={50}
-          />
+          <Reveal>
+            <p className="eyebrow">Craft and legacy</p>
+            <BlurText
+              tag="h1"
+              text="Two firms, one ledger, master karigars on the same benches."
+              className="mt-6 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl"
+              delay={50}
+            />
+          </Reveal>
         </div>
       </section>
 
@@ -38,23 +40,25 @@ export default function Craft() {
 
       <section className="bg-paper">
         <div className="container-site grid grid-cols-1 gap-12 py-20 lg:grid-cols-2 lg:gap-20 lg:py-28">
-          <div>
+          <Reveal>
             <p className="eyebrow">The loom</p>
             <h2 className="mt-4 font-display text-2xl font-normal leading-tight text-ink lg:text-3xl">
               Four hundred and twenty looms across two sheds. All owned. None contract.
             </h2>
-          </div>
-          <div className="space-y-6 text-base leading-[1.7] text-ink-soft">
-            <p>
-              When a buyer places a forty-piece run with Janani, the warp is dressed in our shed,
-              on our beam, by weavers on our ledger. We do not subcontract overflow. When capacity
-              is full, we quote longer lead times rather than farm out to unknown looms.
-            </p>
-            <p>
-              This is why a boutique owner can reorder a colourway eighteen months later and receive
-              the exact hand-feel and weight they sold the previous season.
-            </p>
-          </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="space-y-6 text-base leading-[1.7] text-ink-soft">
+              <p>
+                When a buyer places a forty-piece run with Janani, the warp is dressed in our shed,
+                on our beam, by weavers on our ledger. We do not subcontract overflow. When capacity
+                is full, we quote longer lead times rather than farm out to unknown looms.
+              </p>
+              <p>
+                This is why a boutique owner can reorder a colourway eighteen months later and receive
+                the exact hand-feel and weight they sold the previous season.
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -65,11 +69,11 @@ export default function Craft() {
           <ScrollReveal>
             The weaver marks his bench before he begins. The mark is the same one his father used.
           </ScrollReveal>
-          <AnimatedContent distance={32} delay={0.2}>
+          <Reveal delay={0.1}>
             <p className="mt-12 text-base leading-[1.7] text-ink">
               Inside the Surat shed, the warping, dyeing, weaving and finishing happen within sight of each other. A thread breaks in the loom and the weaver is at it before it leaves the reed. The lehenga finishing floor is laid out with equal care — design sampling first, then the embroidery shed, then the press, then the pack room.
             </p>
-          </AnimatedContent>
+          </Reveal>
         </div>
       </section>
 
@@ -77,16 +81,20 @@ export default function Craft() {
 
       <section className="bg-paper-deep">
         <div className="container-site py-20 lg:py-28">
-          <p className="eyebrow">The record</p>
-          <h2 className="mt-6 max-w-2xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
-            Continuous production and craft excellence under one roof in Surat.
-          </h2>
+          <Reveal>
+            <p className="eyebrow">The record</p>
+            <h2 className="mt-6 max-w-2xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
+              Continuous production and craft excellence under one roof in Surat.
+            </h2>
+          </Reveal>
           <div className="mt-16 divide-y divide-zari/30 border-y border-zari/30">
-            {TIMELINE.map(item => (
-              <div key={item.year} className="grid grid-cols-1 gap-4 py-6 sm:grid-cols-[120px_1fr] sm:items-baseline">
-                <span className="font-utility text-sm font-semibold text-ink">{item.year}</span>
-                <p className="text-base text-ink-soft">{item.text}</p>
-              </div>
+            {TIMELINE.map((item, idx) => (
+              <Reveal key={item.year} delay={idx * 0.05}>
+                <div className="grid grid-cols-1 gap-4 py-6 sm:grid-cols-[120px_1fr] sm:items-baseline">
+                  <span className="font-utility text-sm font-semibold text-ink">{item.year}</span>
+                  <p className="text-base text-ink-soft">{item.text}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -98,10 +106,10 @@ export default function Craft() {
 function FullBleed({ image, alt }: { image: string; alt: string }) {
   return (
     <div className="relative h-[50svh] min-h-[360px] w-full overflow-hidden bg-ink">
-      <Picture
+      <ImageDrape
         src={image}
         alt={alt}
-        className="h-full w-full object-cover object-center"
+        className="h-full w-full"
       />
     </div>
   )

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import AnimatedContent from '../bits/AnimatedContent'
 import FadeContent from '../bits/FadeContent'
 import BlurText from '../bits/BlurText'
@@ -169,7 +170,9 @@ interface PieceTileProps {
 export function PieceTile({ piece, accent }: PieceTileProps) {
   const { add } = useBasket()
   return (
-    <article
+    <motion.article
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.12 }}
       className={cn(
         'group relative block overflow-hidden border border-zari/40 bg-paper transition-colors hover:border-ink'
       )}
@@ -195,7 +198,9 @@ export function PieceTile({ piece, accent }: PieceTileProps) {
           {piece.category}
         </span>
       </div>
-      <button
+      <motion.button
+        whileTap={{ scale: 0.95 }}
+        transition={{ duration: 0.12 }}
         type="button"
         onClick={() =>
           add(
@@ -214,7 +219,7 @@ export function PieceTile({ piece, accent }: PieceTileProps) {
         aria-label={`Add ${piece.code} to enquiry`}
       >
         +
-      </button>
-    </article>
+      </motion.button>
+    </motion.article>
   )
 }

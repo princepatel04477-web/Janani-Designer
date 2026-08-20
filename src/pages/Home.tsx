@@ -6,8 +6,6 @@ import { usePrefersReducedMotion } from '../lib/useReducedMotion'
 import SplitText from '../components/bits/SplitText'
 import BlurText from '../components/bits/BlurText'
 import ShinyText from '../components/bits/ShinyText'
-import AnimatedContent from '../components/bits/AnimatedContent'
-import FadeContent from '../components/bits/FadeContent'
 import Magnet from '../components/bits/Magnet'
 import FlowingMenu from '../components/bits/FlowingMenu'
 import CircularGallery from '../components/bits/CircularGallery'
@@ -15,6 +13,8 @@ import LogoLoop, { type LogoItem } from '../components/bits/LogoLoop'
 import { Logo } from '../components/brand/Logo'
 import { SelvedgeRule } from '../components/SelvedgeRule'
 import { Picture } from '../components/Picture'
+import { Reveal } from '../components/motion/Reveal'
+import { ImageDrape } from '../components/motion/ImageDrape'
 import { BRANDS } from '../data/brands'
 import { CAPABILITIES, LEGACY, PARTNERS, PIECES } from '../data/pieces'
 import { cn } from '../lib/cn'
@@ -51,7 +51,7 @@ const PARTNER_LOGOS: LogoItem[] = PARTNERS.map(p => ({
 const EASE = [0.16, 1, 0.3, 1] as const
 
 /* --------------------------------------------------------------------------
-   Split hero (Prompt 4)
+   Split hero
 -------------------------------------------------------------------------- */
 
 function HomeHero() {
@@ -174,12 +174,14 @@ function HeroPanel({
         <p className="mt-5 max-w-md text-lg text-paper/90">{copy}</p>
         <div className="mt-8 inline-block">
           <Magnet padding={40} magnetStrength={3}>
-            <Link
-              to={link}
-              className="inline-flex items-center border border-paper px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] text-paper bg-transparent hover:bg-paper hover:text-ink transition-colors duration-base ease-signature focus-visible:outline-2 focus-visible:outline-paper"
-            >
-              See the catalogue →
-            </Link>
+            <motion.div whileTap={{ scale: 0.98 }} transition={{ duration: 0.12 }}>
+              <Link
+                to={link}
+                className="inline-flex items-center border border-paper px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] text-paper bg-transparent hover:bg-paper hover:text-ink transition-colors duration-base ease-signature focus-visible:outline-2 focus-visible:outline-paper"
+              >
+                See the catalogue →
+              </Link>
+            </motion.div>
           </Magnet>
         </div>
       </motion.div>
@@ -188,7 +190,7 @@ function HeroPanel({
 }
 
 /* --------------------------------------------------------------------------
-   Legacy strip (Prompt 5 §1)
+   Legacy strip
 -------------------------------------------------------------------------- */
 
 function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
@@ -214,7 +216,7 @@ function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
           requestAnimationFrame(step)
         }
       },
-      { threshold: 0.4 }
+      { threshold: 0.15 }
     )
     io.observe(el)
     return () => io.disconnect()
@@ -238,7 +240,7 @@ function LegacyStrip() {
   return (
     <section aria-label="Legacy" className="bg-paper-deep">
       <div className="container-site py-24 lg:py-32">
-        <FadeContent blur duration={800}>
+        <Reveal>
           <ul className="grid grid-cols-2 gap-y-12 lg:grid-cols-4">
             {items.map((it, i) => (
               <li
@@ -255,14 +257,14 @@ function LegacyStrip() {
               </li>
             ))}
           </ul>
-        </FadeContent>
+        </Reveal>
       </div>
     </section>
   )
 }
 
 /* --------------------------------------------------------------------------
-   Two brand introductions (Prompt 5 §2)
+   Two brand introductions
 -------------------------------------------------------------------------- */
 
 function TwoBrandIntroductions() {
@@ -272,17 +274,14 @@ function TwoBrandIntroductions() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-20">
           {/* Sarees — image left, text right */}
           <div className="lg:col-span-7 lg:order-1 order-2">
-            <AnimatedContent className="aspect-[4/5] w-full" distance={48}>
-              <Picture
-                src="/hero-sarees.webp"
-                alt="Janani Dreams TexFab weaving showcase"
-                className="aspect-[4/5] w-full object-cover object-center"
-                loading="lazy"
-              />
-            </AnimatedContent>
+            <ImageDrape
+              src="/hero-sarees.webp"
+              alt="Janani Dreams TexFab weaving showcase"
+              className="aspect-[4/5] w-full"
+            />
           </div>
           <div className="lg:col-span-5 lg:order-2 order-1">
-            <AnimatedContent distance={48} reverse>
+            <Reveal>
               <p className="eyebrow" style={{ color: 'var(--neel)' }}>
                 {BRANDS.jdt.name}
               </p>
@@ -294,12 +293,12 @@ function TwoBrandIntroductions() {
                 <p className="text-ink-soft">{BRANDS.jdt.story[1]}</p>
               </div>
               <TextLink to="/sarees" label="See the saree catalogue" accent="var(--neel)" />
-            </AnimatedContent>
+            </Reveal>
           </div>
 
           {/* Lehengas — flipped: text left, image right */}
           <div className="lg:col-span-5 lg:order-3 order-3">
-            <AnimatedContent distance={48}>
+            <Reveal>
               <p className="eyebrow" style={{ color: 'var(--lac)' }}>
                 {BRANDS.jdw.name}
               </p>
@@ -311,17 +310,14 @@ function TwoBrandIntroductions() {
                 <p className="text-ink-soft">{BRANDS.jdw.story[1]}</p>
               </div>
               <TextLink to="/lehengas" label="See the lehenga catalogue" accent="var(--lac)" />
-            </AnimatedContent>
+            </Reveal>
           </div>
           <div className="lg:col-span-7 lg:order-4 order-4">
-            <AnimatedContent className="aspect-[4/5] w-full" distance={48} reverse>
-              <Picture
-                src="/hero-lehengas.webp"
-                alt="Janani Designer World bridal finishing showcase"
-                className="aspect-[4/5] w-full object-cover object-center"
-                loading="lazy"
-              />
-            </AnimatedContent>
+            <ImageDrape
+              src="/hero-lehengas.webp"
+              alt="Janani Designer World bridal finishing showcase"
+              className="aspect-[4/5] w-full"
+            />
           </div>
         </div>
       </div>
@@ -331,39 +327,45 @@ function TwoBrandIntroductions() {
 
 function TextLink({ to, label, accent }: { to: string; label: string; accent: string }) {
   return (
-    <Link
-      to={to}
-      className="group mt-8 inline-flex items-center gap-3 font-utility text-xs uppercase tracking-[0.18em] text-ink"
-    >
-      <span className="relative pb-1">
-        {label}
-        <span
-          aria-hidden
-          className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 transition-transform duration-base ease-signature group-hover:scale-x-100"
-          style={{ backgroundColor: accent }}
-        />
-      </span>
-      <span aria-hidden style={{ color: accent }}>→</span>
-    </Link>
+    <motion.div whileTap={{ scale: 0.98 }} transition={{ duration: 0.12 }} className="inline-block">
+      <Link
+        to={to}
+        className="group mt-8 inline-flex items-center gap-3 font-utility text-xs uppercase tracking-[0.18em] text-ink"
+      >
+        <span className="relative pb-1">
+          {label}
+          <span
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 transition-transform duration-base ease-signature group-hover:scale-x-100"
+            style={{ backgroundColor: accent }}
+          />
+        </span>
+        <span aria-hidden style={{ color: accent }}>→</span>
+      </Link>
+    </motion.div>
   )
 }
 
 /* --------------------------------------------------------------------------
-   Signature collections (Prompt 5 §3) — CircularGallery
+   Signature collections — CircularGallery (Desktop) / Native CSS Rail (Mobile)
 -------------------------------------------------------------------------- */
 
 function SignatureCollections() {
   return (
-    <section aria-label="Signature collections" className="bg-paper-deep">
+    <section aria-label="Signature collections" className="bg-paper-deep overflow-x-clip">
       <div className="container-site pt-24 lg:pt-32">
-        <div className="mb-12">
-          <p className="eyebrow">Signature collections</p>
-          <h2 className="mt-5 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl text-ink">
-            Pieces from both houses, dragged into view.
-          </h2>
-        </div>
+        <Reveal>
+          <div className="mb-12">
+            <p className="eyebrow">Signature collections</p>
+            <h2 className="mt-5 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl text-ink">
+              Pieces from both houses, dragged into view.
+            </h2>
+          </div>
+        </Reveal>
       </div>
-      <div className="h-[480px] w-full">
+
+      {/* Desktop WebGL CircularGallery */}
+      <div className="hidden md:block h-[480px] w-full">
         <CircularGallery
           items={GALLERY}
           bend={1.4}
@@ -372,20 +374,50 @@ function SignatureCollections() {
           font='400 22px "Bodoni Moda", serif'
         />
       </div>
+
+      {/* Mobile Native CSS Scroll-Snap Rail */}
+      <div className="block md:hidden w-full overflow-x-auto px-6 py-4 [scroll-snap-type:x_mandatory] [overscroll-behavior-x:contain] [scrollbar-width:none]">
+        <div className="flex gap-4 w-max">
+          {PIECES.slice(0, 8).map(piece => (
+            <motion.div
+              key={piece.code}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.12 }}
+              className="flex-none w-[78vw] max-w-[300px] [scroll-snap-align:start] border border-zari/40 bg-paper p-4"
+            >
+              <Link to={`/design/${piece.code}`} className="block">
+                <div className="aspect-[3/4] w-full overflow-hidden bg-paper-deep">
+                  <ImageDrape
+                    src={piece.image}
+                    alt={piece.name}
+                    className="h-full w-full"
+                  />
+                </div>
+                <div className="mt-3 flex items-baseline justify-between">
+                  <span className="font-utility text-xs font-medium text-ink">{piece.code}</span>
+                  <span className="font-utility text-xs text-ink-soft">{piece.fabric}</span>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
       <div className="container-site pb-24 lg:pb-32">
         <Magnet padding={40} magnetStrength={3}>
-          <Link
-            to="/collections"
-            className="mt-10 inline-flex items-center border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] bg-ink text-paper hover:bg-neel transition-colors duration-base ease-signature"
-          >
-            Open the full catalogue
-          </Link>
+          <motion.div whileTap={{ scale: 0.98 }} transition={{ duration: 0.12 }}>
+            <Link
+              to="/collections"
+              className="mt-10 inline-flex items-center border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] bg-ink text-paper hover:bg-neel transition-colors duration-base ease-signature"
+            >
+              Open the full catalogue
+            </Link>
+          </motion.div>
         </Magnet>
       </div>
     </section>
   )
 }
-
 
 /* --------------------------------------------------------------------------
    House Directory (FlowingMenu)
@@ -395,10 +427,12 @@ function HouseDirectory() {
   return (
     <section aria-label="House departments" className="bg-ink text-paper overflow-x-clip">
       <div className="container-site py-20 lg:py-24">
-        <p className="eyebrow text-paper/60">House directory</p>
-        <h2 className="mt-5 max-w-2xl font-display text-2xl font-normal leading-[1.1] tracking-tight text-paper lg:text-3xl">
-          Two firms, distinct crafts, unified under one ledger.
-        </h2>
+        <Reveal>
+          <p className="eyebrow text-paper/60">House directory</p>
+          <h2 className="mt-5 max-w-2xl font-display text-2xl font-normal leading-[1.1] tracking-tight text-paper lg:text-3xl">
+            Two firms, distinct crafts, unified under one ledger.
+          </h2>
+        </Reveal>
       </div>
       <div className="h-auto md:h-[440px] w-full border-y border-zari/30 overflow-x-clip">
         <FlowingMenu
@@ -416,19 +450,21 @@ function HouseDirectory() {
 }
 
 /* --------------------------------------------------------------------------
-   Why partner with us (Prompt 5 §5)
+   Why partner with us
 -------------------------------------------------------------------------- */
 
 function WhyPartner() {
   return (
     <section aria-label="Why partner with us" className="bg-paper">
       <div className="container-site py-24 lg:py-40">
-        <p className="eyebrow">Why partner with us</p>
-        <BlurText
-          text="Five things a buyer evaluates, in order."
-          className="mt-5 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl"
-          delay={50}
-        />
+        <Reveal>
+          <p className="eyebrow">Why partner with us</p>
+          <BlurText
+            text="Five things a buyer evaluates, in order."
+            className="mt-5 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl"
+            delay={50}
+          />
+        </Reveal>
         <ul className="mt-16 grid grid-cols-1 lg:grid-cols-5">
           {CAPABILITIES.map((cap, i) => (
             <li
@@ -438,9 +474,11 @@ function WhyPartner() {
                 i > 0 && 'lg:border-l lg:border-zari/30'
               )}
             >
-              <p className="font-utility text-xs text-ink-soft">{cap.index}</p>
-              <p className="mt-6 font-display text-xl leading-tight text-ink">{cap.title}</p>
-              <p className="mt-4 text-sm text-ink-soft">{cap.copy}</p>
+              <Reveal delay={i * 0.08}>
+                <p className="font-utility text-xs text-ink-soft">{cap.index}</p>
+                <p className="mt-6 font-display text-xl leading-tight text-ink">{cap.title}</p>
+                <p className="mt-4 text-sm text-ink-soft">{cap.copy}</p>
+              </Reveal>
             </li>
           ))}
         </ul>
@@ -450,17 +488,19 @@ function WhyPartner() {
 }
 
 /* --------------------------------------------------------------------------
-   Retail partners (Prompt 5 §6) — LogoLoop marquee
+   Retail partners
 -------------------------------------------------------------------------- */
 
 function RetailPartners() {
   return (
     <section aria-label="Retail partners" className="bg-paper-deep">
       <div className="container-site py-20 lg:py-24">
-        <p className="eyebrow">Retail partners across India</p>
-        <h2 className="mt-5 max-w-2xl font-display text-2xl font-normal leading-[1.1] tracking-tight lg:text-4xl text-ink">
-          On the floor at boutique owners, multi-brand stores and export buyers.
-        </h2>
+        <Reveal>
+          <p className="eyebrow">Retail partners across India</p>
+          <h2 className="mt-5 max-w-2xl font-display text-2xl font-normal leading-[1.1] tracking-tight lg:text-4xl text-ink">
+            On the floor at boutique owners, multi-brand stores and export buyers.
+          </h2>
+        </Reveal>
       </div>
       <div className="border-y border-zari/30 py-8">
         <LogoLoop
@@ -477,27 +517,29 @@ function RetailPartners() {
 }
 
 /* --------------------------------------------------------------------------
-   Catalogue CTA (Prompt 5 §7)
+   Catalogue CTA
 -------------------------------------------------------------------------- */
 
 function CatalogueCTA() {
   return (
     <section aria-label="Catalogue request" className="bg-ink text-paper">
       <div className="container-site py-32 lg:py-40">
-        <p className="eyebrow text-paper/60">Wholesale · catalogue 2026</p>
-        <h2 className="mt-6 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-5xl">
-          <ShinyText
-            text="Send the catalogue to your inbox."
-            color="var(--paper)"
-            shineColor="var(--zari)"
-            speed={8}
-            spread={140}
-            className="font-display"
-          />
-        </h2>
-        <p className="mt-6 max-w-xl text-lg text-paper/80">
-          Forty pieces, two firms, one PDF. We send it the same hour, Monday through Friday.
-        </p>
+        <Reveal>
+          <p className="eyebrow text-paper/60">Wholesale · catalogue 2026</p>
+          <h2 className="mt-6 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-5xl">
+            <ShinyText
+              text="Send the catalogue to your inbox."
+              color="var(--paper)"
+              shineColor="var(--zari)"
+              speed={8}
+              spread={140}
+              className="font-display"
+            />
+          </h2>
+          <p className="mt-6 max-w-xl text-lg text-paper/80">
+            Forty pieces, two firms, one PDF. We send it the same hour, Monday through Friday.
+          </p>
+        </Reveal>
         <form
           className="mt-12 flex flex-col items-stretch gap-3 border-b border-paper/30 pb-3 sm:flex-row sm:items-end"
           onSubmit={(e) => {
@@ -515,12 +557,14 @@ function CatalogueCTA() {
             />
           </label>
           <Magnet padding={40} magnetStrength={3}>
-            <button
+            <motion.button
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.12 }}
               type="submit"
               className="border border-paper px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] text-paper hover:bg-paper hover:text-ink transition-colors duration-base ease-signature"
             >
               Send catalogue
-            </button>
+            </motion.button>
           </Magnet>
         </form>
       </div>
