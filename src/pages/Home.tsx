@@ -60,7 +60,7 @@ function HomeHero() {
   return (
     <section
       aria-label="Janani — two firms"
-      className="relative isolate h-[calc(100dvh-100px)] min-h-[580px] w-full overflow-hidden border-b border-zari/30"
+      className="relative isolate h-[calc(100svh-100px)] min-h-[580px] w-full overflow-hidden border-b border-zari/30"
     >
       <h1 className="sr-only">Janani — Wholesale Sarees &amp; Designer Lehengas</h1>
       <div className="flex h-full flex-col lg:flex-row">
@@ -393,14 +393,14 @@ function SignatureCollections() {
 
 function HouseDirectory() {
   return (
-    <section aria-label="House departments" className="bg-ink text-paper">
+    <section aria-label="House departments" className="bg-ink text-paper overflow-x-clip">
       <div className="container-site py-20 lg:py-24">
         <p className="eyebrow text-paper/60">House directory</p>
         <h2 className="mt-5 max-w-2xl font-display text-2xl font-normal leading-[1.1] tracking-tight text-paper lg:text-3xl">
           Two firms, distinct crafts, unified under one ledger.
         </h2>
       </div>
-      <div className="h-[440px] w-full border-y border-zari/30">
+      <div className="h-auto md:h-[440px] w-full border-y border-zari/30 overflow-x-clip">
         <FlowingMenu
           items={DEPARTMENTS}
           speed={18}

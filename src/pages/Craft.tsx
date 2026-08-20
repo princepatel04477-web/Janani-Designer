@@ -97,7 +97,7 @@ export default function Craft() {
 
 function FullBleed({ image, alt }: { image: string; alt: string }) {
   return (
-    <div className="relative h-[50vh] min-h-[360px] w-full overflow-hidden bg-ink">
+    <div className="relative h-[50svh] min-h-[360px] w-full overflow-hidden bg-ink">
       <Picture
         src={image}
         alt={alt}

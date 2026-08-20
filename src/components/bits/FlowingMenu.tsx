@@ -2,6 +2,9 @@
  * FlowingMenu — vendored from React Bits (github.com/DavidHDev/react-bits, MIT + Commons Clause)
  * Restyled for Janani: ink ground, paper type, zari hairlines, Bodoni Moda,
  * no rounding, signature easing, reduced-motion guard.
+ *
+ * Below md (768px): Renders as sequential sections in normal document flow.
+ * Above md (768px): Retains full interactive GSAP marquee flowing behavior.
  */
 import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
@@ -42,8 +45,8 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({
   borderColor = 'var(--zari)'
 }) => {
   return (
-    <div className="w-full h-full overflow-hidden" style={{ backgroundColor: bgColor }}>
-      <nav className="flex flex-col h-full m-0 p-0">
+    <div className="w-full h-auto md:h-full overflow-hidden overflow-x-clip" style={{ backgroundColor: bgColor }}>
+      <nav className="flex flex-col h-auto md:h-full m-0 p-0">
         {items.map((item, idx) => (
           <MenuItem
             key={idx}
@@ -94,7 +97,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       if (!marqueeContent) return;
       const contentWidth = marqueeContent.offsetWidth;
       const viewportWidth = window.innerWidth;
-      const needed = Math.ceil(viewportWidth / contentWidth) + 2;
+      const needed = Math.ceil(viewportWidth / (contentWidth || 1)) + 2;
       setRepetitions(Math.max(4, needed));
     };
 
@@ -106,7 +109,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   useEffect(() => {
     const setupMarquee = () => {
       if (!marqueeInnerRef.current) return;
-      if (reduced) return;
+      if (reduced || window.innerWidth < 768) return;
       const marqueeContent = marqueeInnerRef.current.querySelector('.marquee-part') as HTMLElement;
       if (!marqueeContent) return;
       const contentWidth = marqueeContent.offsetWidth;
@@ -135,7 +138,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
   const handleMouseEnter = (ev: React.MouseEvent<HTMLAnchorElement>) => {
     if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
-    if (reduced) return;
+    if (reduced || window.innerWidth < 768) return;
     const rect = itemRef.current.getBoundingClientRect();
     const edge = findClosestEdge(ev.clientX - rect.left, ev.clientY - rect.top, rect.width, rect.height);
 
@@ -148,7 +151,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
   const handleMouseLeave = (ev: React.MouseEvent<HTMLAnchorElement>) => {
     if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
-    if (reduced) return;
+    if (reduced || window.innerWidth < 768) return;
     const rect = itemRef.current.getBoundingClientRect();
     const edge = findClosestEdge(ev.clientX - rect.left, ev.clientY - rect.top, rect.width, rect.height);
 
@@ -160,12 +163,12 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
   return (
     <div
-      className="flex-1 relative overflow-hidden text-center"
+      className="relative flex-1 py-7 md:py-0 h-auto md:h-full overflow-hidden text-center flex items-center justify-center"
       ref={itemRef}
       style={{ borderTop: isFirst ? 'none' : `1px solid ${borderColor}` }}
     >
       <a
-        className="flex items-center justify-center h-full relative cursor-pointer no-underline font-display font-normal tracking-tight text-[8vh] leading-none"
+        className="flex items-center justify-center h-full w-full relative cursor-pointer no-underline font-display font-normal tracking-tight text-[clamp(1.5rem,4.5vw,2.5rem)] md:text-[clamp(2rem,6.5vh,3.5rem)] leading-tight px-4"
         href={link}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -174,14 +177,14 @@ const MenuItem: React.FC<MenuItemProps> = ({
         {text}
       </a>
       <div
-        className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none translate-y-[101%]"
+        className="hidden md:block absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none translate-y-[101%]"
         ref={marqueeRef}
         style={{ backgroundColor: marqueeBgColor }}
       >
         <div className="h-full w-fit flex" ref={marqueeInnerRef}>
           {[...Array(repetitions)].map((_, idx) => (
             <div className="marquee-part flex items-center flex-shrink-0" key={idx} style={{ color: marqueeTextColor }}>
-              <span className="whitespace-nowrap font-display text-[8vh] leading-[1] px-[1vw] tracking-tight">{text}</span>
+              <span className="whitespace-nowrap font-display text-[clamp(2rem,6.5vh,3.5rem)] leading-[1] px-[1vw] tracking-tight">{text}</span>
               <div
                 className="w-[180px] h-[10vh] my-[2em] mx-[2vw] py-[1em] border border-zari/30 bg-cover bg-center"
                 style={{ backgroundImage: `url(${image})` }}

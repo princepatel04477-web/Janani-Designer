@@ -35,7 +35,7 @@ export function BrandLanding({ brand, pieces }: BrandLandingProps) {
       {/* Brand hero */}
       <section
         aria-label={brand.name}
-        className="relative isolate h-[70vh] w-full overflow-hidden border-b border-zari/30 bg-ink"
+        className="relative isolate h-[70svh] min-h-[480px] w-full overflow-hidden border-b border-zari/30 bg-ink"
       >
         <img
           src={brand.id === 'jdt' ? '/hero-sarees.webp' : '/hero-lehengas.webp'}
