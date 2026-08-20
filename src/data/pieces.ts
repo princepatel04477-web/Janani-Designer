@@ -69,7 +69,7 @@ export const PARTNERS: { name: string; city: string }[] = [
 ]
 
 export const LEGACY = {
-  year: 1987,
+  year: 2016,
   karigars: 1200,
   cities: 240,
   piecesPerMonth: 9000

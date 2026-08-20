@@ -71,7 +71,7 @@ function HomeHero() {
           setHovered={setHovered}
           image="/hero-sarees.webp"
           alt="Janani Dreams TexFab — wholesale sarees"
-          eyebrow="Janani Dreams TexFab · Established 1987"
+          eyebrow="Janani Dreams TexFab · Established 2016"
           heading="Sarees"
           copy="Wholesale sarees, woven and woven-finished under one roof."
           link="/sarees"
@@ -82,7 +82,7 @@ function HomeHero() {
           setHovered={setHovered}
           image="/hero-lehengas.webp"
           alt="Janani Designer World — wholesale designer lehengas"
-          eyebrow="Janani Designer World · Established 2004"
+          eyebrow="Janani Designer World · Established 2016"
           heading="Lehengas"
           copy="Wholesale designer lehengas, embroidered and finished in-house."
           link="/lehengas"

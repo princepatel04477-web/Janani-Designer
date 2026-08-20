@@ -49,7 +49,7 @@ export function Footer() {
       </div>
       <div className="border-t border-paper/15">
         <div className="container-site flex flex-col gap-2 py-6 font-utility text-xs text-paper/60 sm:flex-row sm:items-center sm:justify-between">
-          <span>Janani, established 1987. Two firms, one loom-room.</span>
+          <span>Janani, established 2016. Two firms, one loom-room.</span>
           <span>© {new Date().getFullYear()} Janani · All rights reserved</span>
         </div>
       </div>

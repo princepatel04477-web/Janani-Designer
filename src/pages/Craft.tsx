@@ -6,19 +6,18 @@ import AnimatedContent from '../components/bits/AnimatedContent'
 import { usePageMeta } from '../lib/usePageMeta'
 
 const TIMELINE = [
-  { year: 1987, text: 'Janani Dreams TexFab founded in Surat as a six-loom weaving house.' },
-  { year: 1993, text: 'Second shed added in Sachin GIDC; capacity grows to forty-two looms.' },
-  { year: 2001, text: 'First export order to the Gulf; same packing room that we use today.' },
-  { year: 2004, text: 'Janani Designer World opens in Jaipur as a finishing floor for the second generation.' },
-  { year: 2010, text: 'Loom count crosses two hundred; sarees and lehenga run as separate books under one ledger.' },
-  { year: 2018, text: 'In-house kalamkari block unit added to the Jaipur floor.' },
-  { year: 2026, text: 'Twelve bridal and reception cycles a year; nine thousand finished pieces a month; one hundred and twenty karigars on the roll.' }
+  { year: 2016, text: 'Janani Dreams TexFab and Janani Designer World established in Surat and Jaipur.' },
+  { year: 2018, text: 'Second weaving shed added in Sachin GIDC; loom capacity expands to over 150 looms.' },
+  { year: 2020, text: 'Direct wholesale distribution established across retail boutiques and multi-brand buyers nationwide.' },
+  { year: 2022, text: 'Dedicated zardozi and hand-embroidery units commissioned on the Jaipur finishing floor.' },
+  { year: 2024, text: 'Loom capacity expands to 420 looms with 9,000 finished sarees and bridal pieces per month.' },
+  { year: 2026, text: 'Twelve bridal and reception cycles a year; master karigars supplying leading retail boutiques across India.' }
 ]
 
 export default function Craft() {
   usePageMeta({
     title: 'Craft and legacy',
-    description: 'Two firms, one ledger, three generations on the same benches. The loom, the bench, the mark.'
+    description: 'Two firms, one ledger, master karigars on the same benches. The loom, the bench, the mark.'
   })
 
   return (
@@ -28,7 +27,7 @@ export default function Craft() {
           <p className="eyebrow">Craft and legacy</p>
           <BlurText
             tag="h1"
-            text="Two firms, one ledger, three generations on the same benches."
+            text="Two firms, one ledger, master karigars on the same benches."
             className="mt-6 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl"
             delay={50}
           />
