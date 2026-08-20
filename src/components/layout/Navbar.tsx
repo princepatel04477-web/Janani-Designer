@@ -57,23 +57,23 @@ export function Navbar() {
 
   return (
     <>
-      <header
+      <div
         className={cn(
-          'fixed inset-x-0 top-8 z-40 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-slow ease-signature',
+          'w-full transition-[background-color,border-color] duration-slow ease-signature',
           transparent
-            ? 'bg-ink/35 backdrop-blur-md supports-[backdrop-filter]:bg-ink/30'
-            : 'bg-paper border-b border-zari/30'
+            ? 'bg-ink/80 text-paper'
+            : 'bg-paper text-ink border-b border-zari/40'
         )}
       >
         <div className="container-site flex h-[68px] items-center justify-between gap-6">
-          <nav className="hidden flex-1 gap-8 text-sm md:flex">
+          <nav className="hidden flex-1 gap-8 text-sm md:flex" aria-label="Main Navigation Left">
             {LEFT.map(item => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
                   cn(
-                    'transition-opacity hover:opacity-70 focus-visible:opacity-70',
+                    'transition-opacity hover:opacity-70 focus-visible:opacity-70 focus-visible:outline-2 focus-visible:outline-ink',
                     transparent ? 'text-paper' : 'text-ink',
                     isActive && 'underline decoration-zari decoration-1 underline-offset-[6px]'
                   )
@@ -88,21 +88,21 @@ export function Navbar() {
             to="/"
             aria-label="Janani — back to home"
             className={cn(
-              'font-display text-2xl tracking-[0.32em] focus-visible:outline-1 focus-visible:outline-zari focus-visible:outline-offset-4',
+              'font-display text-2xl tracking-[0.32em] focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-4',
               transparent ? 'text-paper' : 'text-ink'
             )}
           >
             JANANI
           </Link>
 
-          <nav className="hidden flex-1 items-center justify-end gap-8 text-sm md:flex">
+          <nav className="hidden flex-1 items-center justify-end gap-8 text-sm md:flex" aria-label="Main Navigation Right">
             {RIGHT.map(item => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
                   cn(
-                    'transition-opacity hover:opacity-70 focus-visible:opacity-70',
+                    'transition-opacity hover:opacity-70 focus-visible:opacity-70 focus-visible:outline-2 focus-visible:outline-ink',
                     transparent ? 'text-paper' : 'text-ink',
                     isActive && 'underline decoration-zari decoration-1 underline-offset-[6px]'
                   )
@@ -117,10 +117,10 @@ export function Navbar() {
                 type="button"
                 onClick={toggle}
                 className={cn(
-                  'flex h-7 min-w-7 items-center justify-center border px-2 font-utility text-xs tabular-nums transition-colors duration-base ease-signature',
+                  'flex h-7 min-w-7 items-center justify-center border px-2 font-utility text-xs tabular-nums transition-colors duration-base ease-signature focus-visible:outline-2 focus-visible:outline-ink',
                   transparent
                     ? 'border-paper/60 text-paper hover:bg-paper hover:text-ink'
-                    : 'border-zari/60 text-ink hover:bg-zari hover:text-paper'
+                    : 'border-zari/60 text-ink hover:bg-ink hover:text-paper'
                 )}
                 aria-label={`Enquiry basket, ${count} pieces`}
               >
@@ -135,14 +135,14 @@ export function Navbar() {
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen(v => !v)}
             className={cn(
-              'md:hidden font-utility text-xs uppercase tracking-[0.2em] transition-opacity hover:opacity-70',
+              'md:hidden font-utility text-xs uppercase tracking-[0.2em] transition-opacity hover:opacity-70 p-2 focus-visible:outline-2 focus-visible:outline-ink',
               transparent ? 'text-paper' : 'text-ink'
             )}
           >
             {mobileOpen ? 'Close' : 'Menu'}
           </button>
         </div>
-      </header>
+      </div>
 
       {/* Mobile overlay */}
       <MobileOverlay open={mobileOpen} onClose={() => setMobileOpen(false)} />
@@ -172,29 +172,48 @@ function MobileOverlay({ open, onClose }: { open: boolean; onClose: () => void }
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true" aria-label="Site menu">
-      <button
-        type="button"
-        aria-label="Close menu"
-        onClick={onClose}
-        className="absolute inset-0 cursor-default bg-ink/40"
-        tabIndex={-1}
-      />
-      <div className="absolute inset-0 z-10 overflow-hidden bg-ink text-paper">
-        <MobileMenuList items={items} />
+    <div className="fixed inset-0 z-50 md:hidden flex flex-col bg-ink text-paper" role="dialog" aria-modal="true" aria-label="Site menu">
+      {/* Top action header with explicit, accessible Close button */}
+      <div className="flex h-16 items-center justify-between px-6 border-b border-zari/30 relative z-20">
+        <Link
+          to="/"
+          onClick={onClose}
+          className="font-display text-xl tracking-[0.28em] text-paper focus-visible:outline-2 focus-visible:outline-paper"
+        >
+          JANANI
+        </Link>
+        <button
+          type="button"
+          aria-label="Close menu"
+          onClick={onClose}
+          className="border border-paper/40 px-4 py-2 font-utility text-xs uppercase tracking-[0.18em] text-paper hover:bg-paper hover:text-ink transition-colors focus-visible:outline-2 focus-visible:outline-paper"
+        >
+          Close (Esc)
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto relative z-10">
+        <MobileMenuList items={items} onItemClick={onClose} />
       </div>
     </div>
   )
 }
 
-function MobileMenuList({ items }: { items: { link: string; text: string; image: string }[] }) {
+function MobileMenuList({
+  items,
+  onItemClick
+}: {
+  items: { link: string; text: string; image: string }[]
+  onItemClick: () => void
+}) {
   return (
-    <nav className="flex h-full flex-col" aria-label="Mobile site menu">
+    <nav className="flex min-h-full flex-col" aria-label="Mobile site menu">
       {items.map(item => (
         <Link
           key={item.link}
           to={item.link}
-          className="group relative flex flex-1 items-center justify-center overflow-hidden border-t border-zari/30 font-display text-5xl font-normal leading-none tracking-tight focus-visible:outline-1 focus-visible:outline-zari focus-visible:outline-offset-4"
+          onClick={onItemClick}
+          className="group relative flex flex-1 items-center justify-center min-h-[72px] overflow-hidden border-b border-zari/30 font-display text-3xl font-normal leading-none tracking-tight focus-visible:outline-2 focus-visible:outline-paper"
         >
           <span className="relative z-10 transition-transform duration-slow ease-signature group-hover:-translate-y-1">
             {item.text}

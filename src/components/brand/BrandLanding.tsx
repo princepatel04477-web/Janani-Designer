@@ -5,6 +5,7 @@ import BlurText from '../bits/BlurText'
 import ShinyText from '../bits/ShinyText'
 import Magnet from '../bits/Magnet'
 import Masonry from '../bits/Masonry'
+import { Picture } from '../Picture'
 import { SelvedgeRule } from '../SelvedgeRule'
 import { useBasket } from '../../context/BasketContext'
 import type { Brand, Piece } from '../../data/types'
@@ -55,6 +56,7 @@ export function BrandLanding({ brand, pieces }: BrandLandingProps) {
               <ShinyText text={`${brand.legalName} · est. ${brand.founded}`} color="rgba(240, 238, 230, 0.85)" shineColor="var(--zari)" speed={6} />
             </p>
             <BlurText
+              tag="h1"
               text={brand.name}
               className="mt-5 font-display text-3xl font-normal leading-[1.05] tracking-tight sm:text-4xl lg:text-5xl"
               delay={50}
@@ -130,7 +132,7 @@ export function BrandLanding({ brand, pieces }: BrandLandingProps) {
             <Magnet padding={30} magnetStrength={3}>
               <Link
                 to={`/collections?firm=${brand.id}`}
-                className="border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
+                className="border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] bg-ink text-paper hover:bg-neel transition-colors duration-base ease-signature"
               >
                 Open the catalogue
               </Link>
@@ -138,7 +140,7 @@ export function BrandLanding({ brand, pieces }: BrandLandingProps) {
             <Magnet padding={30} magnetStrength={3}>
               <Link
                 to="/enquiry"
-                className="border border-zari px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
+                className="border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] text-ink hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
               >
                 See the basket
               </Link>
@@ -169,16 +171,27 @@ export function PieceTile({ piece, accent }: PieceTileProps) {
   return (
     <article
       className={cn(
-        'group relative block overflow-hidden border border-zari/30 bg-paper'
+        'group relative block overflow-hidden border border-zari/40 bg-paper transition-colors hover:border-ink'
       )}
     >
-      <div className="aspect-[3/4] w-full bg-cover bg-center" style={{ backgroundImage: `url(${piece.image})` }} />
+      <Link to={`/design/${piece.code}`} className="block">
+        <div className="aspect-[3/4] w-full overflow-hidden bg-paper-deep">
+          <Picture
+            src={piece.image}
+            alt={piece.imageAlt}
+            className="h-full w-full object-cover object-center transition-transform duration-slow ease-signature group-hover:scale-105"
+            loading="lazy"
+          />
+        </div>
+      </Link>
       <div className="flex items-baseline justify-between gap-3 px-4 py-4">
         <div>
-          <p className="font-utility text-xs">{piece.code}</p>
+          <Link to={`/design/${piece.code}`} className="font-utility text-xs font-medium text-ink hover:underline">
+            {piece.code}
+          </Link>
           <p className="mt-1 text-sm text-ink-soft">{piece.fabric}</p>
         </div>
-        <span className="font-utility text-xs" style={{ color: accent }}>
+        <span className="font-utility text-xs font-medium" style={{ color: accent }}>
           {piece.category}
         </span>
       </div>
@@ -197,7 +210,7 @@ export function PieceTile({ piece, accent }: PieceTileProps) {
             1
           )
         }
-        className="absolute right-3 top-3 hidden h-9 w-9 items-center justify-center border border-zari/60 font-utility text-xs text-ink opacity-0 transition-opacity duration-base ease-signature hover:bg-zari hover:text-paper group-hover:opacity-100 sm:flex"
+        className="absolute right-3 top-3 hidden h-9 w-9 items-center justify-center border border-ink bg-paper font-utility text-sm text-ink opacity-0 transition-all duration-base ease-signature hover:bg-ink hover:text-paper group-hover:opacity-100 sm:flex"
         aria-label={`Add ${piece.code} to enquiry`}
       >
         +

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { SelvedgeRule } from '../components/SelvedgeRule'
+import { Picture } from '../components/Picture'
 import BlurText from '../components/bits/BlurText'
 import FadeContent from '../components/bits/FadeContent'
 import Magnet from '../components/bits/Magnet'
@@ -149,6 +150,7 @@ export default function Collections({ firmPreset }: { firmPreset?: 'jdt' | 'jdw'
         <div className="container-site py-12 lg:py-16">
           <p className="eyebrow">The catalogue</p>
           <BlurText
+            tag="h1"
             text="Forty pieces, two firms. Filter and send."
             className="mt-5 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl"
             delay={50}
@@ -177,7 +179,7 @@ export default function Collections({ firmPreset }: { firmPreset?: 'jdt' | 'jdw'
                     key={`${c.key}-${c.value}`}
                     type="button"
                     onClick={() => toggleFilter(c.key, c.value)}
-                    className="inline-flex items-center gap-2 border border-zari/40 px-3 py-1.5 font-utility text-xs uppercase tracking-[0.12em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
+                    className="inline-flex items-center gap-2 border border-ink px-3 py-1.5 font-utility text-xs uppercase tracking-[0.12em] bg-paper text-ink hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
                   >
                     <span>{c.label}</span>
                     <span aria-hidden>×</span>
@@ -186,7 +188,7 @@ export default function Collections({ firmPreset }: { firmPreset?: 'jdt' | 'jdw'
                 <button
                   type="button"
                   onClick={clearAll}
-                  className="ml-2 font-utility text-xs uppercase tracking-[0.12em] text-ink-soft hover:text-ink"
+                  className="ml-2 font-utility text-xs uppercase tracking-[0.12em] text-ink-soft hover:text-ink underline"
                 >
                   Clear all
                 </button>
@@ -200,7 +202,7 @@ export default function Collections({ firmPreset }: { firmPreset?: 'jdt' | 'jdw'
                   <button
                     type="button"
                     onClick={clearAll}
-                    className="mt-6 border border-zari px-6 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
+                    className="mt-6 border border-ink px-6 py-3 font-utility text-xs uppercase tracking-[0.18em] bg-ink text-paper hover:bg-neel transition-colors duration-base ease-signature"
                   >
                     Clear filters
                   </button>
@@ -221,7 +223,7 @@ export default function Collections({ firmPreset }: { firmPreset?: 'jdt' | 'jdw'
                       <button
                         type="button"
                         onClick={() => setShown(s => s + NEXT_SIZE)}
-                        className="border border-zari px-8 py-4 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
+                        className="border border-ink px-8 py-4 font-utility text-xs uppercase tracking-[0.18em] bg-ink text-paper hover:bg-neel transition-colors duration-base ease-signature"
                       >
                         Load {Math.min(NEXT_SIZE, filtered.length - shown)} more
                       </button>
@@ -251,11 +253,11 @@ function FilterRail({
   return (
     <div className="sticky top-[140px] space-y-10">
       <div className="flex items-baseline justify-between">
-        <p className="font-display text-xl">Filters</p>
+        <p className="font-display text-xl text-ink">Filters</p>
         <button
           type="button"
           onClick={onClear}
-          className="font-utility text-xs uppercase tracking-[0.12em] text-ink-soft hover:text-ink"
+          className="font-utility text-xs uppercase tracking-[0.12em] text-ink-soft hover:text-ink underline"
         >
           Clear all
         </button>
@@ -275,9 +277,9 @@ function FilterRail({
                       type="checkbox"
                       checked={checked}
                       onChange={() => onToggle(f.key, v)}
-                      className="h-4 w-4 cursor-pointer border border-zari bg-paper accent-zari"
+                      className="h-4 w-4 cursor-pointer border border-ink bg-paper accent-ink"
                     />
-                    <span>{label}</span>
+                    <span className="text-ink">{label}</span>
                   </label>
                 </li>
               )
@@ -294,18 +296,14 @@ function PieceCard({ piece }: { piece: Piece }) {
   const accent = piece.firm === 'jdt' ? 'var(--neel)' : 'var(--lac)'
 
   return (
-    <Link to={`/design/${piece.code}`} className="group block">
+    <Link to={`/design/${piece.code}`} className="group block border border-zari/30 bg-paper p-2 transition-colors hover:border-ink">
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-paper-deep">
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-opacity duration-base ease-signature group-hover:opacity-0"
-          style={{ backgroundImage: `url(${piece.image})` }}
+        <Picture
+          src={piece.image}
+          alt={piece.imageAlt}
+          className="h-full w-full object-cover object-center transition-transform duration-slow ease-signature group-hover:scale-105"
+          loading="lazy"
         />
-        {piece.altImage && (
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-base ease-signature group-hover:opacity-100"
-            style={{ backgroundImage: `url(${piece.altImage})` }}
-          />
-        )}
         <button
           type="button"
           onClick={e => {
@@ -319,27 +317,26 @@ function PieceCard({ piece }: { piece: Piece }) {
               colourway: piece.colourway
             })
           }}
-          className="absolute right-3 top-3 hidden h-9 w-9 items-center justify-center border border-zari/70 bg-paper/85 font-utility text-base text-ink transition-colors duration-base ease-signature hover:bg-zari hover:text-paper sm:flex"
+          className="absolute right-3 top-3 hidden h-9 w-9 items-center justify-center border border-ink bg-paper font-utility text-base text-ink transition-all duration-base ease-signature hover:bg-ink hover:text-paper sm:flex"
           aria-label={`Add ${piece.code} to enquiry`}
         >
           +
         </button>
         <span
-          className="absolute bottom-3 left-3 inline-flex items-center gap-1 border border-zari/40 bg-paper/85 px-2 py-1 font-utility text-xs"
+          className="absolute bottom-3 left-3 inline-flex items-center gap-1 border border-zari/60 bg-paper px-2 py-1 font-utility text-xs"
           style={{ color: accent }}
         >
           {BRANDS[piece.firm].name}
         </span>
       </div>
-      <div className="mt-4 flex items-baseline justify-between gap-3">
-        <p className="font-utility text-xs">{piece.code}</p>
+      <div className="mt-4 flex items-baseline justify-between gap-3 px-1">
+        <p className="font-utility text-xs font-medium text-ink">{piece.code}</p>
         <p className="text-xs text-ink-soft">{piece.fabric}</p>
       </div>
-      <p className="mt-1 text-sm text-ink">{piece.name}</p>
+      <p className="mt-1 px-1 text-sm text-ink">{piece.name}</p>
     </Link>
   )
 }
 
-// Hint TypeScript the type helpers exist for tooltips/IDE
 export const _brandLabels = FIRM_LABELS
 export const _cn = cn

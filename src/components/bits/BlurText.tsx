@@ -1,7 +1,7 @@
 /**
  * BlurText — vendored from React Bits (github.com/DavidHDev/react-bits, MIT + Commons Clause)
  * Restyled for Janani: signature easing, house durations, gentler blur,
- * reduced-motion guard.
+ * reduced-motion guard. Extended with semantic tag prop.
  */
 import {
   motion,
@@ -9,7 +9,7 @@ import {
   type Transition,
   type Easing
 } from 'framer-motion';
-import { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { EASE_SIGNATURE_CSS } from '../../lib/motion';
 
 type BlurTextProps = {
@@ -25,6 +25,7 @@ type BlurTextProps = {
   easing?: Easing | Easing[];
   onAnimationComplete?: () => void;
   stepDuration?: number;
+  tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span';
 };
 
 const buildKeyframes = (
@@ -52,12 +53,13 @@ const BlurText: React.FC<BlurTextProps> = ({
   animationTo,
   easing = EASE_SIGNATURE_CSS as unknown as Easing,
   onAnimationComplete,
-  stepDuration = 0.4
+  stepDuration = 0.4,
+  tag = 'p'
 }) => {
   const reduced = useReducedMotion();
   const elements = animateBy === 'words' ? text.split(' ') : text.split('');
   const [inView, setInView] = useState(false);
-  const ref = useRef<HTMLParagraphElement>(null);
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -99,16 +101,18 @@ const BlurText: React.FC<BlurTextProps> = ({
   const totalDuration = stepDuration * (stepCount - 1);
   const times = Array.from({ length: stepCount }, (_, i) => (stepCount === 1 ? 0 : i / (stepCount - 1)));
 
+  const Tag = tag as any;
+
   if (reduced) {
     return (
-      <p ref={ref} className={`blur-text ${className} flex flex-wrap`}>
+      <Tag ref={ref} className={`blur-text ${className} flex flex-wrap`}>
         {text}
-      </p>
+      </Tag>
     );
   }
 
   return (
-    <p ref={ref} className={`blur-text ${className} flex flex-wrap`}>
+    <Tag ref={ref} className={`blur-text ${className} flex flex-wrap`}>
       {elements.map((segment, index) => {
         const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
 
@@ -136,7 +140,7 @@ const BlurText: React.FC<BlurTextProps> = ({
           </motion.span>
         );
       })}
-    </p>
+    </Tag>
   );
 };
 

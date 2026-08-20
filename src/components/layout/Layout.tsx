@@ -8,15 +8,16 @@ import { CustomCursor } from '../CustomCursor'
 
 /**
  * Layout — the persistent shell around every page.
- * The navbar is fixed; content gets the top padding so the utility strip and
- * navbar don't overlap the first section.
+ * The fixed top container holds the utility strip and navbar together to prevent content bleed.
  */
 export function Layout({ children }: { children: ReactNode }) {
   return (
     <>
       <CustomCursor />
-      <UtilityStrip />
-      <Navbar />
+      <header className="fixed inset-x-0 top-0 z-40">
+        <UtilityStrip />
+        <Navbar />
+      </header>
       <div className="pt-[100px]">{children}</div>
       <Footer />
       <FloatingWhatsApp />

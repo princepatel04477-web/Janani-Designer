@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion, type Variants } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { usePageMeta } from '../lib/usePageMeta'
+import { usePrefersReducedMotion } from '../lib/useReducedMotion'
 import SplitText from '../components/bits/SplitText'
 import BlurText from '../components/bits/BlurText'
 import ShinyText from '../components/bits/ShinyText'
@@ -13,6 +14,7 @@ import FlowingMenu from '../components/bits/FlowingMenu'
 import CircularGallery from '../components/bits/CircularGallery'
 import LogoLoop, { type LogoItem } from '../components/bits/LogoLoop'
 import { SelvedgeRule } from '../components/SelvedgeRule'
+import { Picture } from '../components/Picture'
 import { BRANDS } from '../data/brands'
 import { CAPABILITIES, LEGACY, PARTNERS, PIECES } from '../data/pieces'
 import { cn } from '../lib/cn'
@@ -58,8 +60,9 @@ function HomeHero() {
   return (
     <section
       aria-label="Janani — two firms"
-      className="relative isolate h-[calc(100vh-100px)] w-full overflow-hidden border-b border-zari/30"
+      className="relative isolate h-[calc(100dvh-100px)] min-h-[580px] w-full overflow-hidden border-b border-zari/30"
     >
+      <h1 className="sr-only">Janani — Wholesale Sarees &amp; Designer Lehengas</h1>
       <div className="flex h-full flex-col lg:flex-row">
         <HeroPanel
           firm="jdt"
@@ -113,6 +116,7 @@ function HeroPanel({
   copy: string
   link: string
 }) {
+  const reducedMotion = usePrefersReducedMotion()
   const isHovered = hovered === firm
   const otherHovered = hovered !== null && hovered !== firm
   const accent = firm === 'jdt' ? 'var(--neel)' : 'var(--lac)'
@@ -122,14 +126,11 @@ function HeroPanel({
       onMouseEnter={() => setHovered(firm)}
       onMouseLeave={() => setHovered(null)}
       animate={{
-        flexBasis: isHovered ? '58%' : otherHovered ? '42%' : '50%'
+        flexBasis: reducedMotion ? '50%' : isHovered ? '58%' : otherHovered ? '42%' : '50%'
       }}
-      transition={{ duration: 0.7, ease: EASE }}
+      transition={{ duration: reducedMotion ? 0 : 0.7, ease: EASE }}
       className="relative isolate h-1/2 overflow-hidden bg-ink lg:h-full lg:flex-[1_1_0%]"
     >
-      <Link to={link} className="absolute inset-0 z-20" aria-label={`Open the ${heading} catalogue`}>
-        <span className="sr-only">{`Open the ${heading} catalogue`}</span>
-      </Link>
       <picture>
         <source srcSet={image.replace(/\.webp$/, '.avif')} type="image/avif" />
         <motion.img
@@ -138,48 +139,46 @@ function HeroPanel({
           loading="eager"
           fetchPriority="high"
           decoding="async"
-          animate={{ scale: isHovered ? 1.05 : 1 }}
-          transition={{ duration: 0.7, ease: EASE }}
+          animate={{ scale: !reducedMotion && isHovered ? 1.05 : 1 }}
+          transition={{ duration: reducedMotion ? 0 : 0.7, ease: EASE }}
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
       </picture>
       <motion.div
         aria-hidden
         animate={{ opacity: isHovered ? 0.7 : 0.85 }}
-        transition={{ duration: 0.7, ease: EASE }}
+        transition={{ duration: reducedMotion ? 0 : 0.7, ease: EASE }}
         className="absolute inset-x-0 bottom-0 h-[45%]"
         style={{
           backgroundImage: `linear-gradient(to bottom, transparent 0%, ${accent} 100%)`
         }}
       />
       <motion.div
-        animate={{ opacity: otherHovered ? 0.6 : 1 }}
-        transition={{ duration: 0.7, ease: EASE }}
+        animate={{ opacity: !reducedMotion && otherHovered ? 0.6 : 1 }}
+        transition={{ duration: reducedMotion ? 0 : 0.7, ease: EASE }}
         className="absolute inset-x-0 bottom-0 z-10 px-6 pb-16 pt-24 text-paper sm:px-10 lg:px-16"
       >
-          <p className="font-utility text-xs uppercase tracking-[0.18em] text-paper/80">
-            {eyebrow}
-          </p>
-          <SplitText
-            tag="h1"
-            text={heading}
-            className="mt-4 block font-display text-3xl font-normal leading-[1.05] tracking-tight sm:text-4xl"
-            duration={0.8}
-            delay={0.18}
-          />
-          <p className="mt-5 max-w-md text-lg text-paper/90">{copy}</p>
-          <div className="mt-8 inline-block">
-            <Magnet padding={40} magnetStrength={3}>
-              <span
-                className="inline-flex items-center border border-paper px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] text-paper transition-colors duration-base ease-signature"
-                style={{ ['--accent' as string]: accent }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = accent }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = '' }}
-              >
-                See the catalogue →
-              </span>
-            </Magnet>
-          </div>
+        <p className="font-utility text-xs uppercase tracking-[0.18em] text-paper/80">
+          {eyebrow}
+        </p>
+        <SplitText
+          tag="h2"
+          text={heading}
+          className="mt-4 block font-display text-3xl font-normal leading-[1.05] tracking-tight sm:text-4xl"
+          duration={0.8}
+          delay={0.18}
+        />
+        <p className="mt-5 max-w-md text-lg text-paper/90">{copy}</p>
+        <div className="mt-8 inline-block">
+          <Magnet padding={40} magnetStrength={3}>
+            <Link
+              to={link}
+              className="inline-flex items-center border border-paper px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] text-paper bg-transparent hover:bg-paper hover:text-ink transition-colors duration-base ease-signature focus-visible:outline-2 focus-visible:outline-paper"
+            >
+              See the catalogue →
+            </Link>
+          </Magnet>
+        </div>
       </motion.div>
     </motion.div>
   )
@@ -246,7 +245,7 @@ function LegacyStrip() {
                   i > 0 && 'lg:border-l lg:border-zari/30'
                 )}
               >
-                <p className="font-display text-5xl font-normal leading-none tracking-tight lg:text-6xl">
+                <p className="font-display text-5xl font-normal leading-none tracking-tight lg:text-6xl text-ink">
                   <CountUp to={it.value} suffix={it.suffix} />
                 </p>
                 <p className="mt-4 font-utility text-xs text-ink-soft">{it.label}</p>
@@ -270,11 +269,12 @@ function TwoBrandIntroductions() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-20">
           {/* Sarees — image left, text right */}
           <div className="lg:col-span-7 lg:order-1 order-2">
-            <AnimatedContent className="aspect-[4/5] w-full bg-cover bg-center" distance={48}>
-              <div
-                className="aspect-[4/5] w-full bg-cover bg-center"
-                style={{ backgroundImage: 'url(/hero-sarees.webp)' }}
-                aria-hidden
+            <AnimatedContent className="aspect-[4/5] w-full" distance={48}>
+              <Picture
+                src="/hero-sarees.webp"
+                alt="Janani Dreams TexFab weaving showcase"
+                className="aspect-[4/5] w-full object-cover object-center"
+                loading="lazy"
               />
             </AnimatedContent>
           </div>
@@ -283,7 +283,7 @@ function TwoBrandIntroductions() {
               <p className="eyebrow" style={{ color: 'var(--neel)' }}>
                 {BRANDS.jdt.name}
               </p>
-              <h2 className="mt-5 font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
+              <h2 className="mt-5 font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl text-ink">
                 Woven on four hundred and twenty looms we own.
               </h2>
               <div className="mt-6 max-w-prose space-y-4 text-base text-ink">
@@ -300,7 +300,7 @@ function TwoBrandIntroductions() {
               <p className="eyebrow" style={{ color: 'var(--lac)' }}>
                 {BRANDS.jdw.name}
               </p>
-              <h2 className="mt-5 font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
+              <h2 className="mt-5 font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl text-ink">
                 Embroidered on the same benches season after season.
               </h2>
               <div className="mt-6 max-w-prose space-y-4 text-base text-ink">
@@ -311,11 +311,12 @@ function TwoBrandIntroductions() {
             </AnimatedContent>
           </div>
           <div className="lg:col-span-7 lg:order-4 order-4">
-            <AnimatedContent className="aspect-[4/5] w-full bg-cover bg-center" distance={48} reverse>
-              <div
-                className="aspect-[4/5] w-full bg-cover bg-center"
-                style={{ backgroundImage: 'url(/hero-lehengas.webp)' }}
-                aria-hidden
+            <AnimatedContent className="aspect-[4/5] w-full" distance={48} reverse>
+              <Picture
+                src="/hero-lehengas.webp"
+                alt="Janani Designer World bridal finishing showcase"
+                className="aspect-[4/5] w-full object-cover object-center"
+                loading="lazy"
               />
             </AnimatedContent>
           </div>
@@ -354,7 +355,7 @@ function SignatureCollections() {
       <div className="container-site pt-24 lg:pt-32">
         <div className="mb-12">
           <p className="eyebrow">Signature collections</p>
-          <h2 className="mt-5 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
+          <h2 className="mt-5 max-w-3xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl text-ink">
             Pieces from both houses, dragged into view.
           </h2>
         </div>
@@ -372,7 +373,7 @@ function SignatureCollections() {
         <Magnet padding={40} magnetStrength={3}>
           <Link
             to="/collections"
-            className="mt-10 inline-flex items-center border border-zari px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
+            className="mt-10 inline-flex items-center border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] bg-ink text-paper hover:bg-neel transition-colors duration-base ease-signature"
           >
             Open the full catalogue
           </Link>
@@ -481,7 +482,7 @@ function WhyPartner() {
               )}
             >
               <p className="font-utility text-xs text-ink-soft">{cap.index}</p>
-              <p className="mt-6 font-display text-xl leading-tight">{cap.title}</p>
+              <p className="mt-6 font-display text-xl leading-tight text-ink">{cap.title}</p>
               <p className="mt-4 text-sm text-ink-soft">{cap.copy}</p>
             </li>
           ))}
@@ -500,7 +501,7 @@ function RetailPartners() {
     <section aria-label="Retail partners" className="bg-paper-deep">
       <div className="container-site py-20 lg:py-24">
         <p className="eyebrow">Retail partners across India</p>
-        <h2 className="mt-5 max-w-2xl font-display text-2xl font-normal leading-[1.1] tracking-tight lg:text-3xl">
+        <h2 className="mt-5 max-w-2xl font-display text-2xl font-normal leading-[1.1] tracking-tight lg:text-4xl text-ink">
           On the floor at boutique owners, multi-brand stores and export buyers.
         </h2>
       </div>
@@ -542,7 +543,10 @@ function CatalogueCTA() {
         </p>
         <form
           className="mt-12 flex flex-col items-stretch gap-3 border-b border-paper/30 pb-3 sm:flex-row sm:items-end"
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={(e) => {
+            e.preventDefault()
+            alert('Trade deck request received. The catalogue will be sent to your email.')
+          }}
         >
           <label className="flex-1">
             <span className="sr-only">Email address</span>
@@ -550,7 +554,7 @@ function CatalogueCTA() {
               type="email"
               required
               placeholder="trade@yourstore.com"
-              className="w-full bg-transparent py-3 text-lg text-paper placeholder:text-paper/40 focus:outline-none"
+              className="w-full bg-transparent py-3 text-lg text-paper placeholder:text-paper/40 focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2"
             />
           </label>
           <Magnet padding={40} magnetStrength={3}>

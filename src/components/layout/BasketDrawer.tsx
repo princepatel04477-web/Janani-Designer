@@ -10,9 +10,20 @@ import { cn } from '../../lib/cn'
  */
 export function BasketDrawer() {
   const { isOpen, close, items, count, setQuantity, remove } = useBasket()
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLElement>(null)
 
-  // Focus management: focus first focusable element on open; trap Tab inside the drawer.
+  // Body scroll lock when drawer is open
+  useEffect(() => {
+    if (isOpen) {
+      const prev = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.body.style.overflow = prev
+      }
+    }
+  }, [isOpen])
+
+  // Focus management: focus first focusable element on open; trap Tab inside the drawer; Escape to close.
   useEffect(() => {
     if (!isOpen) return
     const drawer = ref.current
@@ -20,7 +31,12 @@ export function BasketDrawer() {
     const first = drawer.querySelector<HTMLElement>('[data-autofocus]')
     first?.focus()
 
-    const trap = (e: KeyboardEvent) => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        close()
+        return
+      }
+
       if (e.key !== 'Tab') return
       const focusables = drawer.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -37,9 +53,10 @@ export function BasketDrawer() {
         firstEl.focus()
       }
     }
-    drawer.addEventListener('keydown', trap)
-    return () => drawer.removeEventListener('keydown', trap)
-  }, [isOpen])
+
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [isOpen, close])
 
   const grouped = items.reduce<Record<string, typeof items>>((acc, item) => {
     (acc[item.firm] ||= []).push(item)
@@ -52,7 +69,7 @@ export function BasketDrawer() {
         onClick={close}
         aria-hidden={!isOpen}
         className={cn(
-          'fixed inset-0 z-40 bg-ink/40 transition-opacity duration-base ease-signature',
+          'fixed inset-0 z-40 bg-ink/50 transition-opacity duration-base ease-signature',
           isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
         )}
       />
@@ -61,8 +78,10 @@ export function BasketDrawer() {
         role="dialog"
         aria-modal="true"
         aria-label="Enquiry basket"
+        inert={!isOpen ? true : undefined}
+        aria-hidden={!isOpen}
         className={cn(
-          'fixed inset-y-0 right-0 z-50 flex w-full max-w-[480px] flex-col bg-paper transition-transform duration-slow ease-signature',
+          'fixed inset-y-0 right-0 z-50 flex w-full max-w-[480px] flex-col bg-paper border-l border-zari/40 transition-transform duration-slow ease-signature',
           isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >
@@ -72,9 +91,9 @@ export function BasketDrawer() {
             data-autofocus
             type="button"
             onClick={close}
-            className="font-utility text-xs uppercase tracking-[0.2em] text-ink-soft hover:text-ink"
+            className="font-utility text-xs uppercase tracking-[0.2em] text-ink-soft hover:text-ink focus-visible:outline-2 focus-visible:outline-ink px-2 py-1"
           >
-            Close
+            Close (Esc)
           </button>
         </div>
 
@@ -86,7 +105,7 @@ export function BasketDrawer() {
               <Link
                 to="/collections"
                 onClick={close}
-                className="border border-zari px-5 py-3 font-utility text-xs uppercase tracking-[0.18em] text-ink hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
+                className="border border-ink px-5 py-3 font-utility text-xs uppercase tracking-[0.18em] text-ink hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
               >
                 Open the catalogue
               </Link>
@@ -100,34 +119,34 @@ export function BasketDrawer() {
                 <ul className="divide-y divide-zari/30 border-y border-zari/30">
                   {grouped[firmId].map(item => (
                     <li key={`${item.code}-${item.colourway}`} className="grid grid-cols-[64px_1fr_auto] gap-4 py-4">
-                      <div className="aspect-[3/4] bg-cover bg-center" style={{ backgroundImage: `url(${item.image})` }} aria-hidden />
+                      <div className="aspect-[3/4] bg-cover bg-center border border-zari/30" style={{ backgroundImage: `url(${item.image})` }} aria-hidden />
                       <div>
-                        <p className="font-utility text-sm">{item.code}</p>
+                        <p className="font-utility text-sm text-ink font-semibold">{item.code}</p>
                         <p className="mt-1 text-sm text-ink">{item.name}</p>
                         <div className="mt-2 flex items-center gap-2">
-                          <span className="block h-3 w-3 border border-zari/40" style={{ backgroundColor: item.swatch }} aria-hidden />
+                          <span className="block h-3 w-3 border border-zari/60" style={{ backgroundColor: item.swatch }} aria-hidden />
                           <span className="font-utility text-xs text-ink-soft">{item.colourway}</span>
                         </div>
-                        <div className="mt-3 inline-flex items-center border border-zari/40 font-utility text-xs">
+                        <div className="mt-3 inline-flex items-center border border-zari/60 font-utility text-xs">
                           <button
                             type="button"
                             onClick={() => setQuantity(item.code, item.colourway, item.quantity - 1)}
                             aria-label="Decrease quantity"
-                            className="px-3 py-2 hover:bg-zari hover:text-paper"
+                            className="px-3 py-2 hover:bg-ink hover:text-paper transition-colors"
                           >−</button>
                           <span className="px-3 py-2 tabular-nums">{item.quantity}</span>
                           <button
                             type="button"
                             onClick={() => setQuantity(item.code, item.colourway, item.quantity + 1)}
                             aria-label="Increase quantity"
-                            className="px-3 py-2 hover:bg-zari hover:text-paper"
+                            className="px-3 py-2 hover:bg-ink hover:text-paper transition-colors"
                           >+</button>
                         </div>
                       </div>
                       <button
                         type="button"
                         onClick={() => remove(item.code, item.colourway)}
-                        className="self-start font-utility text-xs text-ink-soft hover:text-lac"
+                        className="self-start font-utility text-xs text-ink-soft hover:text-lac px-2 py-1"
                         aria-label={`Remove ${item.code} ${item.colourway}`}
                       >
                         Remove
@@ -143,16 +162,16 @@ export function BasketDrawer() {
         <div className="border-t border-zari/30 px-6 py-5">
           <div className="mb-4 flex items-baseline justify-between font-utility text-xs">
             <span className="text-ink-soft">Total pieces</span>
-            <span className="tabular-nums">{count}</span>
+            <span className="tabular-nums font-semibold">{count}</span>
           </div>
           <Link
             to="/enquiry"
             onClick={close}
             className={cn(
-              'flex w-full items-center justify-center border border-zari px-6 py-4 font-utility text-xs uppercase tracking-[0.18em]',
+              'flex w-full items-center justify-center border border-ink px-6 py-4 font-utility text-xs uppercase tracking-[0.18em] transition-colors duration-base ease-signature',
               items.length === 0
-                ? 'pointer-events-none opacity-30'
-                : 'bg-ink text-paper hover:bg-neel transition-colors duration-base ease-signature'
+                ? 'pointer-events-none opacity-30 bg-ink text-paper'
+                : 'bg-ink text-paper hover:bg-neel'
             )}
           >
             Send enquiry

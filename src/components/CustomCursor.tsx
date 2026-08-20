@@ -135,7 +135,6 @@ export function CustomCursor() {
     // Animation Loop: Lerp follower frame smoothly
     const render = () => {
       const state = stateRef.current
-      // Easing speed: higher = snappier, lower = smoother lag
       const factor = 0.18
 
       state.x += (state.targetX - state.x) * factor
@@ -163,7 +162,8 @@ export function CustomCursor() {
 
         if (isSpecialBadge) {
           size = 56
-          borderClass = 'border-zari bg-paper/90 text-ink backdrop-blur-[2px]'
+          // AGENTS.md compliance: solid bg-paper, zero glassmorphism backdrop-blur
+          borderClass = 'border-ink bg-paper text-ink shadow-none'
           scale = isClick ? 'scale-90' : 'scale-100'
         } else if (state.cursorVariant === 'jdt') {
           size = 40
@@ -175,7 +175,7 @@ export function CustomCursor() {
           rotate = 'rotate-45'
         } else if (isHover) {
           size = 38
-          borderClass = 'border-zari bg-zari/10'
+          borderClass = 'border-ink bg-ink/5'
           rotate = 'rotate-45'
         }
 

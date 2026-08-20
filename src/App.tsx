@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { Layout } from './components/layout/Layout'
+import { ScrollToTop } from './components/layout/ScrollToTop'
 import { BasketProvider } from './context/BasketContext'
 import Home from './pages/Home'
 import Sarees from './pages/Sarees'
@@ -11,10 +12,12 @@ import Craft from './pages/Craft'
 import Partner from './pages/Partner'
 import Contact from './pages/Contact'
 import Styleguide from './pages/Styleguide'
+import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
   return (
     <BasketProvider>
+      <ScrollToTop />
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -29,6 +32,7 @@ export default function App() {
           <Route path="/partner" element={<Partner />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/styleguide" element={<Styleguide />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
     </BasketProvider>

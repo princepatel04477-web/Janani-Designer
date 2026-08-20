@@ -32,7 +32,9 @@ export function Footer() {
             <li className="font-utility text-xs text-paper/70">Sales · trade@janani.in</li>
             <li className="font-utility text-xs text-paper/70">Showrooms · Surat · Jaipur</li>
             <li className="mt-4 flex gap-4 font-utility text-xs">
-              <a href="#" className="hover:text-zari">Catalogue 2026 (PDF)</a>
+              <Link to="/partner" className="text-paper/70 hover:text-paper underline decoration-zari/60 underline-offset-4">
+                Catalogue 2026 (PDF)
+              </Link>
             </li>
           </Column>
         </div>
@@ -69,13 +71,13 @@ function FirmColumn({
     <div>
       <p className="font-display text-xl leading-tight">{name}</p>
       <p className="mt-3 font-utility text-xs text-paper/60">{line}</p>
-      <p className="mt-4 text-sm leading-relaxed text-paper/80">
+      <div className="mt-4 text-sm leading-relaxed text-paper/80 space-y-1">
         {address.map((line, i) => (
-          <span key={i} className="block">
+          <p key={i}>
             {line}
-          </span>
+          </p>
         ))}
-      </p>
+      </div>
     </div>
   )
 }
@@ -83,7 +85,7 @@ function FirmColumn({
 function FooterLink({ to, children }: { to: string; children: React.ReactNode }) {
   return (
     <li>
-      <Link to={to} className="hover:text-zari focus-visible:text-zari">
+      <Link to={to} className="text-paper/80 hover:text-paper focus-visible:text-paper hover:underline decoration-zari/60 underline-offset-4">
         {children}
       </Link>
     </li>

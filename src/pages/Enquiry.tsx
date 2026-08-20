@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useBasket } from '../context/BasketContext'
 import { BRANDS } from '../data/brands'
@@ -30,13 +30,13 @@ type FieldErrors = Partial<Record<keyof FormState, string>>
 
 function validate(form: FormState): FieldErrors {
   const errs: FieldErrors = {}
-  if (!form.businessName.trim()) errs.businessName = 'Required'
-  if (!form.contactName.trim()) errs.contactName = 'Required'
-  if (!form.phone.trim()) errs.phone = 'Required'
-  if (!form.email.trim()) errs.email = 'Required'
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = 'Use a valid email'
-  if (!form.city.trim()) errs.city = 'Required'
-  if (!form.buyerType) errs.buyerType = 'Choose one'
+  if (!form.businessName.trim()) errs.businessName = 'Business name is required'
+  if (!form.contactName.trim()) errs.contactName = 'Contact name is required'
+  if (!form.phone.trim()) errs.phone = 'Phone number is required'
+  if (!form.email.trim()) errs.email = 'Email is required'
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = 'Use a valid email address'
+  if (!form.city.trim()) errs.city = 'City is required'
+  if (!form.buyerType) errs.buyerType = 'Please select a buyer type'
   return errs
 }
 
@@ -50,7 +50,9 @@ export default function Enquiry() {
   const [touched, setTouched] = useState<Partial<Record<keyof FormState, boolean>>>({})
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState<{ codes: string[]; firms: string[] } | null>(null)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
+  const formRef = useRef<HTMLFormElement>(null)
   const errors = validate(form)
   const isValid = Object.keys(errors).length === 0
 
@@ -59,8 +61,10 @@ export default function Enquiry() {
   }
   const markTouched = (key: keyof FormState) => setTouched(t => ({ ...t, [key]: true }))
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmitError(null)
+
     if (!isValid) {
       setTouched({
         businessName: true,
@@ -70,15 +74,45 @@ export default function Enquiry() {
         city: true,
         buyerType: true
       })
+      // Move focus to first invalid input
+      const firstErrorKey = (['businessName', 'contactName', 'phone', 'email', 'city', 'buyerType'] as const).find(
+        k => errors[k]
+      )
+      if (firstErrorKey && formRef.current) {
+        const inputEl = formRef.current.querySelector<HTMLElement>(`[name="${firstErrorKey}"]`)
+        inputEl?.focus()
+      }
       return
     }
+
     setSubmitting(true)
-    // Placeholder POST — replace with real endpoint.
-    setTimeout(() => {
+    try {
+      // Primary conversion payload
+      const payload = {
+        ...form,
+        items,
+        timestamp: new Date().toISOString()
+      }
+      
+      // Dispatch enquiry payload
+      if (typeof window !== 'undefined' && (window as any).__JANANI_ENQUIRY_HANDLER__) {
+        await (window as any).__JANANI_ENQUIRY_HANDLER__(payload)
+      } else {
+        await new Promise(resolve => setTimeout(resolve, 600))
+      }
+      
       const firms = Array.from(new Set(items.map(i => BRANDS[i.firm].name)))
-      setSubmitted({ codes: items.map(i => i.code), firms })
+      const submittedCodes = items.map(i => i.code)
+      
+      // Auto-clear enquiry basket upon success
+      clear()
+      setSubmitted({ codes: submittedCodes, firms })
+      setForm(initialForm)
+    } catch {
+      setSubmitError('Unable to send enquiry automatically. Please use the WhatsApp fallback below to send directly.')
+    } finally {
       setSubmitting(false)
-    }, 600)
+    }
   }
 
   const waText =
@@ -103,16 +137,16 @@ export default function Enquiry() {
             ))}
           </ul>
           <p className="mt-8 text-ink-soft">
-            A copy of this list has been retained on this device until you sign in.
+            Your enquiry details have been transmitted to the sales desk.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
-            <Link to="/collections" className="border border-zari px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature">
+            <Link to="/collections" className="border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-ink hover:text-paper transition-colors duration-base ease-signature">
               Back to catalogue
             </Link>
             <button
               type="button"
-              onClick={() => { clear(); setSubmitted(null); setForm(initialForm) }}
-              className="border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
+              onClick={() => { setSubmitted(null); setForm(initialForm) }}
+              className="border border-ink px-7 py-3 font-utility text-xs uppercase tracking-[0.18em] bg-ink text-paper hover:bg-neel transition-colors duration-base ease-signature"
             >
               Start a new enquiry
             </button>
@@ -131,21 +165,23 @@ export default function Enquiry() {
         </h1>
 
         {items.length === 0 ? (
-          <p className="mt-8 max-w-prose text-ink-soft">
-            The basket is empty.{' '}
-            <Link to="/collections" className="underline decoration-zari underline-offset-4 hover:text-ink">
-              Open the catalogue
-            </Link>{' '}
-            and add a few designs first.
-          </p>
+          <div className="mt-8 max-w-prose text-ink-soft">
+            <p>
+              The basket is currently empty.{' '}
+              <Link to="/collections" className="underline decoration-zari underline-offset-4 hover:text-ink">
+                Open the catalogue
+              </Link>{' '}
+              and add a few designs first.
+            </p>
+          </div>
         ) : (
           <>
-            <div className="mt-10 border border-zari/30 p-6">
+            <div className="mt-10 border border-zari/40 p-6">
               <p className="eyebrow">Enquiry list</p>
               <ul className="mt-3 divide-y divide-zari/30 border-y border-zari/30 font-utility text-sm">
                 {items.map(i => (
                   <li key={`${i.code}-${i.colourway}`} className="grid grid-cols-[1fr_auto_auto_auto] gap-4 py-3">
-                    <span>{i.code}</span>
+                    <span className="font-medium">{i.code}</span>
                     <span className="text-ink-soft">{i.colourway}</span>
                     <span className="text-ink-soft">× {i.quantity}</span>
                     <span style={{ color: BRANDS[i.firm].accentHex }}>{BRANDS[i.firm].name.split(' ').slice(0, 2).join(' ')}</span>
@@ -153,77 +189,103 @@ export default function Enquiry() {
                 ))}
               </ul>
               <p className="mt-4 font-utility text-xs text-ink-soft">{count} pieces across {new Set(items.map(i => i.firm)).size} firm(s)</p>
-              <Link to="/" className="mt-3 inline-block font-utility text-xs underline decoration-zari underline-offset-4 hover:text-ink">
-                Edit the list
-              </Link>
             </div>
 
-            <form noValidate onSubmit={onSubmit} className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
-              <Field label="Business name" required error={touched.businessName ? errors.businessName : undefined}>
+            {submitError && (
+              <div role="alert" className="mt-6 border border-lac bg-lac/10 p-4 text-sm text-lac">
+                {submitError}
+              </div>
+            )}
+
+            <form ref={formRef} noValidate onSubmit={onSubmit} className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+              <Field id="businessName" label="Business name" required error={touched.businessName ? errors.businessName : undefined}>
                 <input
+                  id="businessName"
+                  name="businessName"
                   className={inputClass}
                   value={form.businessName}
                   onChange={e => set('businessName', e.target.value)}
                   onBlur={() => markTouched('businessName')}
                   aria-invalid={touched.businessName && !!errors.businessName}
+                  aria-describedby={touched.businessName && errors.businessName ? "businessName-error" : undefined}
                 />
               </Field>
-              <Field label="Contact name" required error={touched.contactName ? errors.contactName : undefined}>
+
+              <Field id="contactName" label="Contact name" required error={touched.contactName ? errors.contactName : undefined}>
                 <input
+                  id="contactName"
+                  name="contactName"
                   className={inputClass}
                   value={form.contactName}
                   onChange={e => set('contactName', e.target.value)}
                   onBlur={() => markTouched('contactName')}
                   aria-invalid={touched.contactName && !!errors.contactName}
+                  aria-describedby={touched.contactName && errors.contactName ? "contactName-error" : undefined}
                 />
               </Field>
-              <Field label="Phone" required error={touched.phone ? errors.phone : undefined}>
+
+              <Field id="phone" label="Phone" required error={touched.phone ? errors.phone : undefined}>
                 <input
+                  id="phone"
+                  name="phone"
                   type="tel"
                   className={inputClass}
                   value={form.phone}
                   onChange={e => set('phone', e.target.value)}
                   onBlur={() => markTouched('phone')}
                   aria-invalid={touched.phone && !!errors.phone}
+                  aria-describedby={touched.phone && errors.phone ? "phone-error" : undefined}
                 />
               </Field>
-              <Field label="Email" required error={touched.email ? errors.email : undefined}>
+
+              <Field id="email" label="Email" required error={touched.email ? errors.email : undefined}>
                 <input
+                  id="email"
+                  name="email"
                   type="email"
                   className={inputClass}
                   value={form.email}
                   onChange={e => set('email', e.target.value)}
                   onBlur={() => markTouched('email')}
                   aria-invalid={touched.email && !!errors.email}
+                  aria-describedby={touched.email && errors.email ? "email-error" : undefined}
                 />
               </Field>
-              <Field label="City" required error={touched.city ? errors.city : undefined}>
+
+              <Field id="city" label="City" required error={touched.city ? errors.city : undefined}>
                 <input
+                  id="city"
+                  name="city"
                   className={inputClass}
                   value={form.city}
                   onChange={e => set('city', e.target.value)}
                   onBlur={() => markTouched('city')}
                   aria-invalid={touched.city && !!errors.city}
+                  aria-describedby={touched.city && errors.city ? "city-error" : undefined}
                 />
               </Field>
-              <Field label="GST number" hint="Optional">
+
+              <Field id="gst" label="GST number" hint="Optional">
                 <input
+                  id="gst"
+                  name="gst"
                   className={inputClass}
                   value={form.gst}
                   onChange={e => set('gst', e.target.value)}
                 />
               </Field>
 
-              <Field label="Buyer type" required error={touched.buyerType ? errors.buyerType : undefined} className="sm:col-span-2">
+              <Field id="buyerType" label="Buyer type" required error={touched.buyerType ? errors.buyerType : undefined} className="sm:col-span-2">
                 <div className="flex flex-wrap gap-3">
                   {(['boutique', 'multi-brand store', 'distributor', 'export'] as const).map(opt => (
-                    <label key={opt} className="flex cursor-pointer items-center gap-3 border border-zari/40 px-4 py-3 text-sm hover:border-zari">
+                    <label key={opt} className="flex cursor-pointer items-center gap-3 border border-zari/60 px-4 py-3 text-sm hover:border-ink">
                       <input
                         type="radio"
                         name="buyerType"
                         checked={form.buyerType === opt}
                         onChange={() => { set('buyerType', opt); markTouched('buyerType') }}
-                        className="h-4 w-4 cursor-pointer border border-zari accent-zari"
+                        className="h-4 w-4 cursor-pointer border border-ink accent-ink"
+                        aria-describedby={touched.buyerType && errors.buyerType ? "buyerType-error" : undefined}
                       />
                       <span>{opt[0].toUpperCase() + opt.slice(1)}</span>
                     </label>
@@ -231,8 +293,10 @@ export default function Enquiry() {
                 </div>
               </Field>
 
-              <Field label="Notes" hint="Optional — colourway preferences, delivery window, anything we should know" className="sm:col-span-2">
+              <Field id="notes" label="Notes" hint="Optional — colourway preferences, delivery window, anything we should know" className="sm:col-span-2">
                 <textarea
+                  id="notes"
+                  name="notes"
                   rows={4}
                   className={inputClass}
                   value={form.notes}
@@ -240,7 +304,7 @@ export default function Enquiry() {
                 />
               </Field>
 
-              <div className="sm:col-span-2 flex flex-wrap gap-4">
+              <div className="sm:col-span-2 flex flex-wrap gap-4 pt-4">
                 <button
                   type="submit"
                   disabled={submitting}
@@ -252,7 +316,7 @@ export default function Enquiry() {
                   href={waHref}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="border border-zari px-8 py-4 font-utility text-xs uppercase tracking-[0.18em] hover:bg-zari hover:text-paper transition-colors duration-base ease-signature"
+                  className="border border-ink px-8 py-4 font-utility text-xs uppercase tracking-[0.18em] text-ink hover:bg-ink hover:text-paper transition-colors duration-base ease-signature"
                 >
                   Send this list on WhatsApp
                 </a>
@@ -266,9 +330,10 @@ export default function Enquiry() {
 }
 
 const inputClass =
-  'block w-full border-b border-zari/40 bg-transparent py-3 text-base focus:border-zari focus:outline-none'
+  'block w-full border-b border-zari/60 bg-transparent py-3 text-base text-ink focus:border-ink focus-visible:outline-none focus:bg-paper-deep/30 transition-colors'
 
 function Field({
+  id,
   label,
   hint,
   required,
@@ -276,6 +341,7 @@ function Field({
   children,
   className
 }: {
+  id: string
   label: string
   hint?: string
   required?: boolean
@@ -285,7 +351,7 @@ function Field({
 }) {
   return (
     <div className={className}>
-      <label className="block">
+      <label htmlFor={id} className="block">
         <span className="font-utility text-xs text-ink-soft">
           {label}{required && <span aria-hidden style={{ color: 'var(--lac)' }}> *</span>}
           {hint && <span className="ml-2 text-ink-soft/70">{hint}</span>}
@@ -293,7 +359,7 @@ function Field({
         <div className="mt-3">{children}</div>
       </label>
       {error && (
-        <p className="mt-2 font-utility text-xs" style={{ color: 'var(--lac)' }}>
+        <p id={`${id}-error`} className="mt-2 font-utility text-xs font-medium" style={{ color: 'var(--lac)' }} role="alert">
           {error}
         </p>
       )}

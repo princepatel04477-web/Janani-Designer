@@ -106,18 +106,16 @@
     font-weight: 400;
     line-height: 1.1;
     letter-spacing: -0.01em;
-    /* no color — heading inherits from parent. Dark headings come from
-       a paper-bg page or a `text-ink` Tailwind utility on the heading. */
   }
 
   ::selection {
-    background: var(--zari);
+    background: var(--ink);
     color: var(--paper);
   }
 
-  /* Visible keyboard focus, always in zari */
+  /* Visible keyboard focus, 2px solid ink (WCAG AA > 3:1 compliant) */
   :focus-visible {
-    outline: 1px solid var(--zari);
+    outline: 2px solid var(--ink);
     outline-offset: 3px;
   }
 
@@ -138,10 +136,14 @@
 
   @media (pointer: fine) {
     html.has-custom-cursor,
-    html.has-custom-cursor *,
-    html.has-custom-cursor *::before,
-    html.has-custom-cursor *::after {
-      cursor: none !important;
+    html.has-custom-cursor body {
+      cursor: auto;
+    }
+    
+    html.has-custom-cursor button,
+    html.has-custom-cursor a,
+    html.has-custom-cursor [role="button"] {
+      cursor: pointer;
     }
   }
 

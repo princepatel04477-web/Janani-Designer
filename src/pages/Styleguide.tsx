@@ -11,6 +11,7 @@ import CircularGallery from '../components/bits/CircularGallery'
 import Masonry from '../components/bits/Masonry'
 import FlowingMenu from '../components/bits/FlowingMenu'
 import LogoLoop, { type LogoItem } from '../components/bits/LogoLoop'
+import { usePageMeta } from '../lib/usePageMeta'
 
 /* ---------------------------------------------------------------------------
    Styleguide helpers
@@ -143,6 +144,12 @@ function BitRow({
 --------------------------------------------------------------------------- */
 
 export default function Styleguide() {
+  usePageMeta({
+    title: 'Styleguide · Design System',
+    description: 'Internal token system and component preview.',
+    robots: 'noindex, nofollow'
+  })
+
   return (
     <main className="section-y">
       <div className="container-site">
@@ -434,7 +441,7 @@ export default function Styleguide() {
             height={110}
           >
             <Magnet padding={80} magnetStrength={4}>
-              <button className="border border-zari px-10 py-5 font-utility text-sm uppercase tracking-[0.18em] text-ink hover:bg-zari hover:text-paper transition-colors duration-fast ease-[cubic-bezier(0.16,1,0.3,1)]">
+              <button className="border border-ink px-10 py-5 font-utility text-sm uppercase tracking-[0.18em] text-ink hover:bg-ink hover:text-paper transition-colors duration-fast ease-[cubic-bezier(0.16,1,0.3,1)]">
                 Enquire
               </button>
             </Magnet>
