@@ -35,8 +35,9 @@ export function Footer() {
             <FooterLink to="/enquiry">Enquiry basket</FooterLink>
           </Column>
           <Column title="Contact">
-            <li className="font-utility text-xs text-paper/70">Wholesale · +91 98765 43210</li>
-            <li className="font-utility text-xs text-paper/70">Sales · trade@janani.in</li>
+            <li className="font-utility text-xs text-paper/70">Wholesale · +91 95867 21213</li>
+            <li className="font-utility text-xs text-paper/70">Sarees · jananidreamstexfab@gmail.com</li>
+            <li className="font-utility text-xs text-paper/70">Lehengas · janani.sales.12@gmail.com</li>
             <li className="font-utility text-xs text-paper/70">Showrooms · Surat · Jaipur</li>
             <li className="mt-4 flex gap-4 font-utility text-xs">
               <Link to="/partner" className="text-paper/70 hover:text-paper underline decoration-zari/60 underline-offset-4">

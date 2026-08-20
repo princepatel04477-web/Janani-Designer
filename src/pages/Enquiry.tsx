@@ -118,7 +118,7 @@ export default function Enquiry() {
   const waText =
     `Hello Janani — please send a quote on:\n` +
     items.map(i => `- ${i.code} (${i.colourway}) × ${i.quantity}`).join('\n')
-  const waHref = `https://wa.me/919876543210?text=${encodeURIComponent(waText)}`
+  const waHref = `https://wa.me/919586721213?text=${encodeURIComponent(waText)}`
 
   if (submitted) {
     return (

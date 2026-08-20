@@ -9,7 +9,7 @@ export function UtilityStrip() {
     <div className="bg-ink text-paper border-b border-paper/10 relative z-50">
       <div className="container-site flex h-8 items-center justify-between font-utility text-xs">
         <div className="hidden gap-6 sm:flex">
-          <span>Wholesale enquiries · +91 98765 43210</span>
+          <span>Wholesale enquiries · +91 95867 21213</span>
           <Link
             to="/contact"
             className="text-paper/80 hover:text-paper focus-visible:text-paper underline decoration-zari/60 decoration-1 underline-offset-2"
@@ -18,11 +18,11 @@ export function UtilityStrip() {
           </Link>
         </div>
         <a
-          href="tel:+919876543210"
+          href="tel:+919586721213"
           className="sm:hidden text-paper"
-          aria-label="Call wholesale on +91 98765 43210"
+          aria-label="Call wholesale on +91 95867 21213"
         >
-          +91 98765 43210
+          +91 95867 21213
         </a>
         <div className="flex gap-6">
           <Link

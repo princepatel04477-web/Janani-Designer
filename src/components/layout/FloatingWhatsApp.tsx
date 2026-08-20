@@ -9,7 +9,7 @@ export function FloatingWhatsApp() {
   const { isOpen: basketOpen, items } = useBasket()
   if (basketOpen) return null
 
-  const phone = '919876543210'
+  const phone = '919586721213'
   const hasItems = items.length > 0
   const baseText =
     'Hello Janani — I would like to enquire about a wholesale order. Please send me the latest catalogue.'

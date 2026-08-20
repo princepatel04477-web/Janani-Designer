@@ -19,8 +19,8 @@ const FIRMS: FirmContact[] = [
     name: 'Janani Dreams TexFab Pvt Ltd',
     gst: 'GST 24ABCDE1234F1Z5',
     address: ['Plot 17, GIDC Sachin', 'Surat 394230, Gujarat, India'],
-    phone: '+91 98765 43210',
-    email: 'trade@janani.in',
+    phone: '+91 95867 21213',
+    email: 'jananidreamstexfab@gmail.com',
     visiting: 'Mon – Sat · 10:00 – 18:00 IST · by appointment'
   },
   {
@@ -28,8 +28,8 @@ const FIRMS: FirmContact[] = [
     name: 'Janani Designer World',
     gst: 'GST 08ABCDE5678G1Z9',
     address: ['B-22, Sitapura Industrial Area', 'Jaipur 302022, Rajasthan, India'],
-    phone: '+91 98765 43211',
-    email: 'bridal@janani.in',
+    phone: '+91 95867 21213',
+    email: 'janani.sales.12@gmail.com',
     visiting: 'Mon – Sat · 10:00 – 19:00 IST · by appointment'
   }
 ]

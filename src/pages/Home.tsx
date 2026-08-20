@@ -70,9 +70,9 @@ function HomeHero() {
           hovered={hovered}
           setHovered={setHovered}
           image="/hero-sarees.webp"
-          alt="Janani Dreams TexFab — indigo Banarasi saree with gold zari"
-          eyebrow={`Established ${BRANDS.jdt.founded}`}
-          heading={BRANDS.jdt.name}
+          alt="Janani Dreams TexFab — wholesale sarees"
+          eyebrow="Janani Dreams TexFab · Established 1987"
+          heading="Sarees"
           copy="Wholesale sarees, woven and woven-finished under one roof."
           link="/sarees"
         />
@@ -81,9 +81,9 @@ function HomeHero() {
           hovered={hovered}
           setHovered={setHovered}
           image="/hero-lehengas.webp"
-          alt="Janani Designer World — bridal lehenga in lac red with gold zardozi"
-          eyebrow={`Established ${BRANDS.jdw.founded}`}
-          heading={BRANDS.jdw.name}
+          alt="Janani Designer World — wholesale designer lehengas"
+          eyebrow="Janani Designer World · Established 2004"
+          heading="Lehengas"
           copy="Wholesale designer lehengas, embroidered and finished in-house."
           link="/lehengas"
         />
@@ -145,14 +145,16 @@ function HeroPanel({
           className="h-full w-full object-cover object-center"
         />
       </motion.div>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/65 to-ink/30"
+      />
       <motion.div
         aria-hidden
-        animate={{ opacity: isHovered ? 0.7 : 0.85 }}
+        animate={{ opacity: isHovered ? 0.4 : 0.25 }}
         transition={{ duration: reducedMotion ? 0 : 0.7, ease: EASE }}
-        className="absolute inset-x-0 bottom-0 h-[45%]"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, transparent 0%, ${accent} 100%)`
-        }}
+        className="pointer-events-none absolute inset-0 mix-blend-multiply"
+        style={{ backgroundColor: accent }}
       />
       <motion.div
         animate={{ opacity: !reducedMotion && otherHovered ? 0.6 : 1 }}
@@ -160,13 +162,13 @@ function HeroPanel({
         className="absolute inset-x-0 bottom-0 z-10 px-6 pb-16 pt-24 text-paper sm:px-10 lg:px-16"
       >
         <Logo variant="monogram" decorative height={28} className="mb-4 text-paper opacity-90" />
-        <p className="font-utility text-xs uppercase tracking-[0.18em] text-paper/80">
+        <p className="font-utility text-xs uppercase tracking-[0.18em] text-paper/90 font-medium">
           {eyebrow}
         </p>
         <SplitText
           tag="h2"
           text={heading}
-          className="mt-4 block font-display text-3xl font-normal leading-[1.05] tracking-tight sm:text-4xl"
+          className="mt-4 block font-display text-4xl font-normal leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl text-paper"
           duration={0.8}
           delay={0.18}
         />

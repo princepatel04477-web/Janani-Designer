@@ -87,7 +87,7 @@ export default function Design() {
   const waMessage = encodeURIComponent(
     `Hello Janani — I would like to enquire about ${piece.code} (${selectedColourway}). Please send me MOQ and lead time.`
   )
-  const waPhone = piece.firm === 'jdt' ? '919876543210' : '919876543211'
+  const waPhone = '919586721213'
   const waHref = `https://wa.me/${waPhone}?text=${waMessage}`
 
   return (
