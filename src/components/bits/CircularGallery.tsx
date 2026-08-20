@@ -670,12 +670,14 @@ class App {
 
   onWheel(e: Event) {
     const wheelEvent = e as WheelEvent;
-    // Gallery is a horizontal carousel — take over wheel only while the
-    // pointer is over it, so the page never double-scrolls.
-    wheelEvent.preventDefault();
-    const delta = wheelEvent.deltaY || (wheelEvent as any).wheelDelta || (wheelEvent as any).detail;
-    this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
-    this.onCheckDebounce();
+    // Only intercept horizontal wheel scrolling or Shift+Wheel so vertical page scrolling is never hijacked
+    const isHorizontal = Math.abs(wheelEvent.deltaX) > Math.abs(wheelEvent.deltaY);
+    if (wheelEvent.shiftKey || isHorizontal) {
+      wheelEvent.preventDefault();
+      const delta = isHorizontal ? wheelEvent.deltaX : wheelEvent.deltaY;
+      this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
+      this.onCheckDebounce();
+    }
   }
 
   onKeyDown(e: KeyboardEvent) {
@@ -740,18 +742,17 @@ class App {
     this.boundOnKeyDown = this.onKeyDown.bind(this);
 
     window.addEventListener('resize', this.boundOnResize);
-    // Wheel is scoped to the gallery itself so page scroll is never hijacked.
+    // Wheel is scoped to horizontal gestures without hijacking page scroll
     this.container?.addEventListener('wheel', this.boundOnWheel, { passive: false });
-    window.addEventListener('mousedown', this.boundOnTouchDown);
+    this.container?.addEventListener('mousedown', this.boundOnTouchDown);
+    this.container?.addEventListener('touchstart', this.boundOnTouchDown, { passive: true });
     window.addEventListener('mousemove', this.boundOnTouchMove);
     window.addEventListener('mouseup', this.boundOnTouchUp);
-    window.addEventListener('touchstart', this.boundOnTouchDown);
-    window.addEventListener('touchmove', this.boundOnTouchMove);
+    window.addEventListener('touchmove', this.boundOnTouchMove, { passive: true });
     window.addEventListener('touchend', this.boundOnTouchUp);
 
     this.container?.addEventListener(
       'keydown',
-
       this.boundOnKeyDown
     );
   }
@@ -760,10 +761,10 @@ class App {
     window.cancelAnimationFrame(this.raf);
     window.removeEventListener('resize', this.boundOnResize);
     this.container?.removeEventListener('wheel', this.boundOnWheel);
-    window.removeEventListener('mousedown', this.boundOnTouchDown);
+    this.container?.removeEventListener('mousedown', this.boundOnTouchDown);
+    this.container?.removeEventListener('touchstart', this.boundOnTouchDown);
     window.removeEventListener('mousemove', this.boundOnTouchMove);
     window.removeEventListener('mouseup', this.boundOnTouchUp);
-    window.removeEventListener('touchstart', this.boundOnTouchDown);
     window.removeEventListener('touchmove', this.boundOnTouchMove);
     window.removeEventListener('touchend', this.boundOnTouchUp);
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
@@ -772,7 +773,6 @@ class App {
     if (this.container) {
       this.container.removeEventListener(
         'keydown',
-
         this.boundOnKeyDown
       );
     }
