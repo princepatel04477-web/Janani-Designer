@@ -24,16 +24,17 @@ export function Picture({
   height
 }: PictureProps) {
   // Strip any existing extension (.webp, .avif, .jpg, .jpeg, .png)
-  const base = src.replace(/\.(jpe?g|png|webp|avif)$/i, '')
-  const avif = `${base}.avif`
-  const webp = `${base}.webp`
-  
+  const isRelative = typeof src === 'string' && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('data:')
+  const base = isRelative ? src.replace(/\.(jpe?g|png|webp|avif)$/i, '') : src
+  const avif = isRelative ? `${base}.avif` : null
+  const webp = isRelative ? `${base}.webp` : src
+
   return (
-    <picture>
-      <source srcSet={avif} type="image/avif" />
-      <source srcSet={webp} type="image/webp" />
+    <picture className="contents">
+      {avif && <source srcSet={avif} type="image/avif" />}
+      {webp && <source srcSet={webp} type="image/webp" />}
       <img
-        src={webp}
+        src={webp || src}
         alt={alt}
         className={className}
         loading={loading}

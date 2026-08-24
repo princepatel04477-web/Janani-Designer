@@ -4,7 +4,7 @@
  * gentler bend, wheel input scoped to the gallery, reduced-motion guard.
  */
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from 'ogl';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { prefersReducedMotion } from '../../lib/motion';
 
 type GL = Renderer['gl'];
@@ -386,7 +386,9 @@ class Media {
       transparent: true
     });
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    if (this.image && (this.image.startsWith('http://') || this.image.startsWith('https://'))) {
+      img.crossOrigin = 'anonymous';
+    }
     img.src = this.image;
     img.onload = () => {
       texture.image = img;
@@ -801,27 +803,67 @@ export default function CircularGallery({
   scrollEase = 0.06
 }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [webGlSupported, setWebGlSupported] = useState(true);
+
   useEffect(() => {
     if (!containerRef.current) return;
     let app: App | undefined;
     let isMounted = true;
+
+    // Check if WebGL context is available
+    try {
+      const testCanvas = document.createElement('canvas');
+      const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+      if (!gl) {
+        setWebGlSupported(false);
+        return;
+      }
+    } catch {
+      setWebGlSupported(false);
+      return;
+    }
+
     resolveFont(font, fontUrl).then(resolvedFont => {
       if (!isMounted || !containerRef.current) return;
-      app = new App(containerRef.current, {
-        items,
-        bend,
-        textColor,
-        borderRadius,
-        font: resolvedFont,
-        scrollSpeed,
-        scrollEase
-      });
+      try {
+        app = new App(containerRef.current, {
+          items,
+          bend,
+          textColor,
+          borderRadius,
+          font: resolvedFont,
+          scrollSpeed,
+          scrollEase
+        });
+      } catch (err) {
+        console.warn('CircularGallery WebGL initialization failed, using fallback:', err);
+        setWebGlSupported(false);
+      }
+    }).catch(() => {
+      if (isMounted) setWebGlSupported(false);
     });
+
     return () => {
       isMounted = false;
       if (app) app.destroy();
     };
   }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase]);
+
+  if (!webGlSupported && items && items.length > 0) {
+    return (
+      <div className="w-full h-full overflow-x-auto px-6 py-4 flex gap-6 [scrollbar-width:none] items-center">
+        {items.map((it, idx) => (
+          <div key={idx} className="flex-none w-[280px] border border-zari/40 bg-paper p-4">
+            <div className="aspect-[3/4] w-full overflow-hidden bg-paper-deep">
+              <img src={it.image} alt={it.text} className="h-full w-full object-cover object-center" />
+            </div>
+            <p className="mt-3 font-display text-lg text-ink text-center">{it.text}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div
       className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing"

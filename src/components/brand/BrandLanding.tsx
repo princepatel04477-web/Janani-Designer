@@ -38,11 +38,13 @@ export function BrandLanding({ brand, pieces }: BrandLandingProps) {
         aria-label={brand.name}
         className="relative isolate h-[70svh] min-h-[480px] w-full overflow-hidden border-b border-zari/30 bg-ink"
       >
-        <img
+        <Picture
           src={brand.id === 'jdt' ? '/hero-sarees.webp' : '/hero-lehengas.webp'}
-          alt=""
+          alt={`${brand.name} collection hero`}
           aria-hidden
           className="absolute inset-0 h-full w-full object-cover object-center opacity-70"
+          loading="eager"
+          fetchPriority="high"
         />
         <div
           aria-hidden
@@ -115,6 +117,35 @@ export function BrandLanding({ brand, pieces }: BrandLandingProps) {
           <FadeContent blur duration={800} className="h-[640px]">
             <Masonry items={categoryItems} hoverScale={0.98} />
           </FadeContent>
+        </div>
+      </section>
+
+      <SelvedgeRule />
+
+      {/* Featured Pieces */}
+      <section className="bg-paper">
+        <div className="container-site py-20 lg:py-28">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+              <p className="eyebrow" style={{ color: accentVar }}>
+                Featured catalogue
+              </p>
+              <h2 className="mt-4 max-w-2xl font-display text-3xl font-normal leading-[1.1] tracking-tight lg:text-4xl">
+                {brand.name} designs on the floor.
+              </h2>
+            </div>
+            <Link
+              to={`/collections?firm=${brand.id}`}
+              className="font-utility text-xs uppercase tracking-[0.18em] underline underline-offset-4 hover:text-ink-soft text-ink"
+            >
+              View all ({pieces.length}) →
+            </Link>
+          </div>
+          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {pieces.slice(0, 8).map(piece => (
+              <PieceTile key={piece.code} piece={piece} accent={accentVar} />
+            ))}
+          </div>
         </div>
       </section>
 

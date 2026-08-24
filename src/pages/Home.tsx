@@ -387,10 +387,11 @@ function SignatureCollections() {
             >
               <Link to={`/design/${piece.code}`} className="block">
                 <div className="aspect-[3/4] w-full overflow-hidden bg-paper-deep">
-                  <ImageDrape
+                  <Picture
                     src={piece.image}
                     alt={piece.name}
-                    className="h-full w-full"
+                    className="h-full w-full object-cover object-center"
+                    loading="lazy"
                   />
                 </div>
                 <div className="mt-3 flex items-baseline justify-between">

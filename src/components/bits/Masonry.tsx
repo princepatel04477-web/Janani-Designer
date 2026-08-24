@@ -134,7 +134,17 @@ const Masonry: React.FC<MasonryProps> = ({
   };
 
   useEffect(() => {
-    preloadImages(items.map(i => i.img)).then(() => setImagesReady(true));
+    let active = true;
+    preloadImages(items.map(i => i.img)).then(() => {
+      if (active) setImagesReady(true);
+    });
+    const timer = setTimeout(() => {
+      if (active) setImagesReady(true);
+    }, 250);
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
   }, [items]);
 
   const grid = useMemo<GridItem[]>(() => {

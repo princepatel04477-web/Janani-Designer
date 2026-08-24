@@ -28,14 +28,14 @@ export function ImageDrape({
   return (
     <motion.div
       initial={{
-        clipPath: reduce ? 'inset(0 0 0% 0)' : 'inset(0 0 100% 0)',
-        opacity: reduce ? 0 : 1
+        opacity: reduce ? 1 : 0,
+        y: reduce ? 0 : 16
       }}
       whileInView={{
-        clipPath: 'inset(0 0 0% 0)',
-        opacity: 1
+        opacity: 1,
+        y: 0
       }}
-      viewport={{ once: true, amount: 0.15, margin: '0px 0px -8% 0px' }}
+      viewport={{ once: true, amount: 0.05 }}
       transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
       className={`overflow-hidden ${className}`}
     >
